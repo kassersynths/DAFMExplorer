@@ -1,0 +1,21 @@
+# Core data manipulation
+pandas
+numpy
+
+# Machine learning & statistics
+scikit-learn
+joblib
+kneed  # For automatic elbow detection in clustering
+
+# Visualization
+matplotlib
+seaborn
+plotly
+
+# External data sources
+requests
+beautifulsoup4
+wikipedia
+
+# Optional: Faster embedding alternative
+umap-learn
