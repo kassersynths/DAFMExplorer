@@ -140,6 +140,12 @@ This notebook performs comprehensive analysis:
 
 An interactive single-page application to explore the 7 SONIC REALMS of FM synthesis:
 
+<p align="center">
+  <img src="images/DAFMExplorer.png" alt="DAFMExplorer Web App" width="700"/>
+  <br>
+  <em>DAFMExplorer – 2D preset map, filters, synth keyboard, and memory slots</em>
+</p>
+
 ```bash
 cd webapp
 npm install

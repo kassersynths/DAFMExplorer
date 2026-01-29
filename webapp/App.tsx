@@ -369,6 +369,9 @@ const App: React.FC = () => {
           
           {/* Logo + Easter Egg Info Button */}
           <div className="flex items-center gap-3">
+            <a href="https://www.tindie.com/stores/kassersynths/?ref=offsite_badges&utm_source=sellers_Kasser&utm_medium=badges&utm_campaign=badge_medium" target="_blank" rel="noopener noreferrer" className="shrink-0" title="I sell on Tindie">
+              <img src="https://d2ss6ovg47m0r5.cloudfront.net/badges/tindie-mediums.png" alt="I sell on Tindie" width={150} height={78} className="h-[52px] w-auto" />
+            </a>
             <img 
               src="/logo-kasser-synths.svg"
               alt="Kasser Synths" 
