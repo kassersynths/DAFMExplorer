@@ -29,6 +29,10 @@
   </a>
 </p>
 
+<p align="center">
+  <small><a href="https://www.kassersynths.com">kassersynths.com</a> · <a href="https://www.tindie.com/stores/kassersynths/">Tindie</a> · <a href="https://www.youtube.com/watch?v=VieWvUKpT6k">Arcade demos</a></small>
+</p>
+
 ---
 
 ## 🎯 What is DAFMExplorer?
@@ -149,6 +153,8 @@ npm run dev
 - 🎚️ **Octave Control** - Adjust octave range (0-7) with visual slider and numpad controls
 - 📊 **Preset Information** - View detailed metadata including game, composer, nationality, cluster, and GEMS status
 - 🎨 **7 SONIC REALMS** - Explore distinct clusters: Raw Signals, Neon Action, Polished Arcade, High-Speed Chiptune, Deep Space FM, Fantasy Atmospheres, Experimental Playgrounds
+
+If you want to hear the same kind of FM in hardware form, we’ve recorded short Arcade demos on YouTube: [demo 1](https://www.youtube.com/watch?v=VieWvUKpT6k), [demo 2](https://www.youtube.com/watch?v=prvEFqbcZrc).
 
 ### Tech Stack
 
@@ -354,7 +360,8 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 
 **Kasser Synths**
 
-- Website: [kassersynths.com](https://kassersynths.com)
+- Website: [kassersynths.com](https://www.kassersynths.com)
+- Tindie: [kassersynths](https://www.tindie.com/stores/kassersynths/)
 - GitHub: [@kassersynths](https://github.com/kassersynths)
 
 ---
