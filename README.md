@@ -30,7 +30,10 @@
 </p>
 
 <p align="center">
-  <small><a href="https://www.kassersynths.com">kassersynths.com</a> · <a href="https://www.tindie.com/stores/kassersynths/">Tindie</a> · <a href="https://www.youtube.com/watch?v=VieWvUKpT6k">Arcade demos</a></small>
+  <a href="https://www.tindie.com/stores/kassersynths/?ref=offsite_badges&utm_source=sellers_Kasser&utm_medium=badges&utm_campaign=badge_medium"><img src="https://d2ss6ovg47m0r5.cloudfront.net/badges/tindie-mediums.png" alt="I sell on Tindie" width="150" height="78"></a>
+</p>
+<p align="center">
+  <small><a href="https://www.kassersynths.com">kassersynths.com</a> · <a href="https://www.youtube.com/watch?v=VieWvUKpT6k">Arcade demos</a></small>
 </p>
 
 ---
