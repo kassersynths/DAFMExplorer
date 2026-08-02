@@ -1,0 +1,47 @@
+{
+  "format": "aiff",
+  "note_midi": 60,
+  "sample_rate": 44100,
+  "files": [
+    {
+      "aiff": "composer_koshiro_con4_fl7_b0p747.aiff",
+      "id": "YK",
+      "label": "Koshiro",
+      "CON": 4,
+      "FL": 7,
+      "Brightness": 0.747
+    },
+    {
+      "aiff": "composer_nakamura_con4_fl7_b0p562.aiff",
+      "id": "MN",
+      "label": "Nakamura",
+      "CON": 4,
+      "FL": 7,
+      "Brightness": 0.562
+    },
+    {
+      "aiff": "composer_kawaguchi_con5_fl7_b0p585.aiff",
+      "id": "HK",
+      "label": "Kawaguchi",
+      "CON": 5,
+      "FL": 7,
+      "Brightness": 0.585
+    },
+    {
+      "aiff": "composer_hanzawa_con5_fl7_b0p626.aiff",
+      "id": "NH",
+      "label": "Hanzawa",
+      "CON": 5,
+      "FL": 7,
+      "Brightness": 0.626
+    },
+    {
+      "aiff": "composer_kodaka_con2_fl7_b0p553.aiff",
+      "id": "NK",
+      "label": "Kodaka",
+      "CON": 2,
+      "FL": 7,
+      "Brightness": 0.553
+    }
+  ]
+}

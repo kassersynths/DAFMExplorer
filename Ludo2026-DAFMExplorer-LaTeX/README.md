@@ -9,15 +9,17 @@ Abraham presents (~20 min + Q&A).
 
 ## Build
 
-**Recommended (brand fonts from the site):**
+**Recommended (brand fonts + Adobe inline star AIFFs):**
 
 ```bash
 cd Ludo2026-DAFMExplorer-LaTeX
-latexmk -pdfxe main.tex
-# or: xelatex main.tex && xelatex main.tex
+latexmk          # LuaLaTeX via .latexmkrc
+# or: latexmk -pdflua main.tex
 ```
 
-pdfLaTeX also works (`latexmk -pdf`) with the same colours, but falls back to Latin Modern instead of Spartan/Oxanium.
+Open `main.pdf` in **Adobe Acrobat/Reader** to click S1–S5. Re-render audio from repo root: `npx --yes tsx scripts/render_con_eda_aiffs.ts`.
+
+XeLaTeX keeps fonts but cannot embed Beamer `\sound`; use LuaLaTeX for the talk PDF.
 
 ### Brand (from [kassersynths.com](https://www.kassersynths.com/))
 
@@ -49,7 +51,7 @@ Do **not** structure the talk as “notebook 01 / 02”. Internally, material ma
 | Path | Role |
 |------|------|
 | `assets/logo-kasser-synths.png` | Title / closing |
-| `assets/photo_abraham.png` / `photo_maria.png` | Replace with real portraits |
+| `assets/photo_abraham.jpg` / `photo_maria.jpg` | Local portraits (gitignored); PNG placeholders optional |
 | `assets/fig_*.png` | EDA charts from exploratory subset (`webapp/public/data/presets.json`) |
 | `assets/*.jpg|png` | Historical / archival images from repo `images/` |
 | `videos/V1.mp4` … `V3.mp4` | See `videos/README.md` |
@@ -58,8 +60,11 @@ Do **not** structure the talk as “notebook 01 / 02”. Internally, material ma
 
 ## Speaker materials
 
-- `notes/speaker_script_es.md` — Spanish script (~20 min) with video cues  
-- `videos/README.md` — recording checklist  
+- `notes/speaker_script_en.md` — **English spoken script, slide by slide** (~20 min)  
+- `notes/audio/speaker_script_en_narration.mp3` — TTS draft narration (regenerate: `python scripts/narrate_speaker_script.py`)  
+- `notes/speaker_script_es.md` — Spanish outline / cues  
+- `videos/LIVE_DEMOS.md` — VGM + star AIFF cue sheet  
+- `videos/README.md` — recording checklist
 
 ## Live demo (optional, ≤90 s)
 

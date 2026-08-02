@@ -1,0 +1,205 @@
+{
+  "exemplars": [
+    {
+      "id": "TPW1",
+      "label": "Thunder Pro Wrestling",
+      "Name": "Instrument 68",
+      "Filename": "Thunder_Pro_Wrestling_Retsuden_-_06.opm",
+      "CON": 3,
+      "FL": 7,
+      "Brightness": 0.434,
+      "aiff": "tmp_tpw_1.aiff",
+      "params": {
+        "algorithm": 3,
+        "feedback": 7,
+        "ams": 0,
+        "pms": 0,
+        "lfrq": 0,
+        "operators": {
+          "m1": {
+            "ar": 31,
+            "d1r": 9,
+            "d2r": 3,
+            "rr": 5,
+            "d1l": 14,
+            "tl": 42,
+            "ks": 3,
+            "mul": 2,
+            "dt1": 0,
+            "ams_en": 0
+          },
+          "c1": {
+            "ar": 21,
+            "d1r": 7,
+            "d2r": 0,
+            "rr": 5,
+            "d1l": 15,
+            "tl": 48,
+            "ks": 1,
+            "mul": 2,
+            "dt1": 3,
+            "ams_en": 0
+          },
+          "m2": {
+            "ar": 18,
+            "d1r": 11,
+            "d2r": 0,
+            "rr": 5,
+            "d1l": 2,
+            "tl": 39,
+            "ks": 3,
+            "mul": 1,
+            "dt1": 6,
+            "ams_en": 0
+          },
+          "c2": {
+            "ar": 15,
+            "d1r": 4,
+            "d2r": 0,
+            "rr": 8,
+            "d1l": 0,
+            "tl": 127,
+            "ks": 2,
+            "mul": 1,
+            "dt1": 3,
+            "ams_en": 0
+          }
+        }
+      }
+    },
+    {
+      "id": "TPW2",
+      "label": "Thunder Pro Wrestling",
+      "Name": "Instrument 69",
+      "Filename": "Thunder_Pro_Wrestling_Retsuden_-_06.opm",
+      "CON": 3,
+      "FL": 7,
+      "Brightness": 0.434,
+      "aiff": "tmp_tpw_2.aiff",
+      "params": {
+        "algorithm": 3,
+        "feedback": 7,
+        "ams": 0,
+        "pms": 0,
+        "lfrq": 0,
+        "operators": {
+          "m1": {
+            "ar": 31,
+            "d1r": 9,
+            "d2r": 3,
+            "rr": 5,
+            "d1l": 14,
+            "tl": 42,
+            "ks": 3,
+            "mul": 2,
+            "dt1": 0,
+            "ams_en": 0
+          },
+          "c1": {
+            "ar": 21,
+            "d1r": 7,
+            "d2r": 0,
+            "rr": 5,
+            "d1l": 15,
+            "tl": 48,
+            "ks": 1,
+            "mul": 2,
+            "dt1": 3,
+            "ams_en": 0
+          },
+          "m2": {
+            "ar": 18,
+            "d1r": 11,
+            "d2r": 0,
+            "rr": 5,
+            "d1l": 2,
+            "tl": 39,
+            "ks": 3,
+            "mul": 1,
+            "dt1": 6,
+            "ams_en": 0
+          },
+          "c2": {
+            "ar": 15,
+            "d1r": 4,
+            "d2r": 0,
+            "rr": 8,
+            "d1l": 0,
+            "tl": 127,
+            "ks": 2,
+            "mul": 1,
+            "dt1": 3,
+            "ams_en": 0
+          }
+        }
+      }
+    },
+    {
+      "id": "TPW3",
+      "label": "Thunder Pro Wrestling",
+      "Name": "Instrument 46",
+      "Filename": "Thunder_Pro_Wrestling_Retsuden_-_14.opm",
+      "CON": 3,
+      "FL": 7,
+      "Brightness": 0.434,
+      "aiff": "tmp_tpw_3.aiff",
+      "params": {
+        "algorithm": 3,
+        "feedback": 7,
+        "ams": 0,
+        "pms": 0,
+        "lfrq": 0,
+        "operators": {
+          "m1": {
+            "ar": 31,
+            "d1r": 9,
+            "d2r": 3,
+            "rr": 5,
+            "d1l": 14,
+            "tl": 42,
+            "ks": 3,
+            "mul": 2,
+            "dt1": 0,
+            "ams_en": 0
+          },
+          "c1": {
+            "ar": 21,
+            "d1r": 7,
+            "d2r": 0,
+            "rr": 5,
+            "d1l": 15,
+            "tl": 48,
+            "ks": 1,
+            "mul": 2,
+            "dt1": 3,
+            "ams_en": 0
+          },
+          "m2": {
+            "ar": 18,
+            "d1r": 11,
+            "d2r": 0,
+            "rr": 5,
+            "d1l": 2,
+            "tl": 39,
+            "ks": 3,
+            "mul": 1,
+            "dt1": 6,
+            "ams_en": 0
+          },
+          "c2": {
+            "ar": 15,
+            "d1r": 4,
+            "d2r": 0,
+            "rr": 8,
+            "d1l": 0,
+            "tl": 127,
+            "ks": 2,
+            "mul": 1,
+            "dt1": 3,
+            "ams_en": 0
+          }
+        }
+      }
+    }
+  ]
+}

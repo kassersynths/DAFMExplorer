@@ -1,0 +1,138 @@
+{
+  "exemplars": [
+    {
+      "id": "NC",
+      "label": "Nightmare Circus",
+      "Name": "Instrument 3",
+      "Filename": "Nightmare_Circus_-_The_Ticket_Office_2.opm",
+      "CON": 2,
+      "FL": 0,
+      "Brightness": 0.495,
+      "aiff": "game_nightmare_circus_con2_fl0.aiff",
+      "params": {
+        "algorithm": 2,
+        "feedback": 0,
+        "ams": 0,
+        "pms": 0,
+        "lfrq": 0,
+        "operators": {
+          "m1": {
+            "ar": 24,
+            "d1r": 0,
+            "d2r": 0,
+            "rr": 15,
+            "d1l": 4,
+            "tl": 37,
+            "ks": 0,
+            "mul": 2,
+            "dt1": 3,
+            "ams_en": 0
+          },
+          "c1": {
+            "ar": 17,
+            "d1r": 16,
+            "d2r": 0,
+            "rr": 15,
+            "d1l": 15,
+            "tl": 26,
+            "ks": 0,
+            "mul": 1,
+            "dt1": 3,
+            "ams_en": 0
+          },
+          "m2": {
+            "ar": 15,
+            "d1r": 0,
+            "d2r": 8,
+            "rr": 15,
+            "d1l": 3,
+            "tl": 45,
+            "ks": 0,
+            "mul": 3,
+            "dt1": 3,
+            "ams_en": 0
+          },
+          "c2": {
+            "ar": 15,
+            "d1r": 0,
+            "d2r": 0,
+            "rr": 15,
+            "d1l": 11,
+            "tl": 28,
+            "ks": 0,
+            "mul": 0,
+            "dt1": 3,
+            "ams_en": 0
+          }
+        }
+      }
+    },
+    {
+      "id": "TF4",
+      "label": "Thunder Force IV",
+      "Name": "Instrument 5",
+      "Filename": "Thunder_Force_IV_-_25_-_Down_Right_Attack_(Stage_9).opm",
+      "CON": 0,
+      "FL": 7,
+      "Brightness": 0.67,
+      "aiff": "game_thunder_force_iv_con0_b0p67.aiff",
+      "params": {
+        "algorithm": 0,
+        "feedback": 7,
+        "ams": 0,
+        "pms": 0,
+        "lfrq": 0,
+        "operators": {
+          "m1": {
+            "ar": 31,
+            "d1r": 3,
+            "d2r": 3,
+            "rr": 4,
+            "d1l": 1,
+            "tl": 16,
+            "ks": 0,
+            "mul": 3,
+            "dt1": 3,
+            "ams_en": 0
+          },
+          "c1": {
+            "ar": 31,
+            "d1r": 0,
+            "d2r": 0,
+            "rr": 7,
+            "d1l": 0,
+            "tl": 24,
+            "ks": 0,
+            "mul": 0,
+            "dt1": 3,
+            "ams_en": 0
+          },
+          "m2": {
+            "ar": 31,
+            "d1r": 0,
+            "d2r": 0,
+            "rr": 6,
+            "d1l": 0,
+            "tl": 24,
+            "ks": 0,
+            "mul": 0,
+            "dt1": 3,
+            "ams_en": 0
+          },
+          "c2": {
+            "ar": 31,
+            "d1r": 2,
+            "d2r": 0,
+            "rr": 4,
+            "d1l": 0,
+            "tl": 18,
+            "ks": 0,
+            "mul": 4,
+            "dt1": 3,
+            "ams_en": 0
+          }
+        }
+      }
+    }
+  ]
+}

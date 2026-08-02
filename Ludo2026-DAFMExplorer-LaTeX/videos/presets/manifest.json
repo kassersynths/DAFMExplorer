@@ -1,0 +1,118 @@
+{
+  "format": "aiff",
+  "note_midi": 60,
+  "sample_rate": 44100,
+  "hold_s": 1.2,
+  "files": [
+    {
+      "aiff": "star1_ex1_con4_fl7_mul1_tl24.aiff",
+      "star_id": 1,
+      "exemplar": 1,
+      "CON": 4,
+      "FL": 7,
+      "Game": "Battle Golfer Yui",
+      "Name": "Instrument 1",
+      "share_within_con": 0.0088,
+      "narrative": "Workhorse Alg.4: two parallel FM voices. Modal FL+MUL_mod+TL_car shows the default Genesis patch grammar — often max (or high) feedback on M1 with a usable carrier level so the voice still cuts on small TVs."
+    },
+    {
+      "aiff": "star1_ex2_con4_fl7_mul1_tl24.aiff",
+      "star_id": 1,
+      "exemplar": 2,
+      "CON": 4,
+      "FL": 7,
+      "Game": "Battle Mania",
+      "Name": "Instrument 0",
+      "share_within_con": 0.0088,
+      "narrative": "Workhorse Alg.4: two parallel FM voices. Modal FL+MUL_mod+TL_car shows the default Genesis patch grammar — often max (or high) feedback on M1 with a usable carrier level so the voice still cuts on small TVs."
+    },
+    {
+      "aiff": "star2_ex1_con2_fl7_mul1_tl20.aiff",
+      "star_id": 2,
+      "exemplar": 1,
+      "CON": 2,
+      "FL": 7,
+      "Game": "Arcus Odyssey",
+      "Name": "Instrument 2",
+      "share_within_con": 0.0084,
+      "narrative": "Alg.2 stacks modulation into one carrier (C2). The modal terna tends to push richer, more intertwined spectra — denser leads/basses when composers leave the Alg.4 comfort zone."
+    },
+    {
+      "aiff": "star2_ex2_con2_fl7_mul1_tl20.aiff",
+      "star_id": 2,
+      "exemplar": 2,
+      "CON": 2,
+      "FL": 7,
+      "Game": "Bishoujo Senshi Sailor Moon",
+      "Name": "Instrument 3",
+      "share_within_con": 0.0084,
+      "narrative": "Alg.2 stacks modulation into one carrier (C2). The modal terna tends to push richer, more intertwined spectra — denser leads/basses when composers leave the Alg.4 comfort zone."
+    },
+    {
+      "aiff": "star3_ex1_con5_fl7_mul1_tl24.aiff",
+      "star_id": 3,
+      "exemplar": 1,
+      "CON": 5,
+      "FL": 7,
+      "Game": "Arcus Odyssey",
+      "Name": "Instrument 4",
+      "share_within_con": 0.0231,
+      "narrative": "Alg.5: one modulator (M1) feeds multiple carriers — the Pulseman-style brand. A sharp modal combo means a shared wiring habit: bright, harmonically busy patches from a single mod source."
+    },
+    {
+      "aiff": "star3_ex2_con5_fl7_mul1_tl24.aiff",
+      "star_id": 3,
+      "exemplar": 2,
+      "CON": 5,
+      "FL": 7,
+      "Game": "ATP Tour Championship Tennis",
+      "Name": "Instrument 5",
+      "share_within_con": 0.0231,
+      "narrative": "Alg.5: one modulator (M1) feeds multiple carriers — the Pulseman-style brand. A sharp modal combo means a shared wiring habit: bright, harmonically busy patches from a single mod source."
+    },
+    {
+      "aiff": "star4_ex1_con0_fl7_mul1_tl16.aiff",
+      "star_id": 4,
+      "exemplar": 1,
+      "CON": 0,
+      "FL": 7,
+      "Game": "Batman",
+      "Name": "Instrument 5",
+      "share_within_con": 0.0102,
+      "narrative": "Alg.0 is fully serial (1→2→3→4). Modal choices often keep the final carrier audible while earlier ops sculpt harmonics — a more 'chained' FM colour than the two-voice Alg.4 default."
+    },
+    {
+      "aiff": "star4_ex2_con0_fl7_mul1_tl16.aiff",
+      "star_id": 4,
+      "exemplar": 2,
+      "CON": 0,
+      "FL": 7,
+      "Game": "Buster's Hidden Treasure",
+      "Name": "Instrument 7",
+      "share_within_con": 0.0102,
+      "narrative": "Alg.0 is fully serial (1→2→3→4). Modal choices often keep the final carrier audible while earlier ops sculpt harmonics — a more 'chained' FM colour than the two-voice Alg.4 default."
+    },
+    {
+      "aiff": "star5_ex1_con7_fl7_mul1_tl47.aiff",
+      "star_id": 5,
+      "exemplar": 1,
+      "CON": 7,
+      "FL": 7,
+      "Game": "Bram Stoker's Dracula",
+      "Name": "Instrument 12",
+      "share_within_con": 0.0097,
+      "narrative": "Alg.7 is mostly additive; feedback on M1 becomes the main spice. The modal terna here often reads as FL-driven character with carriers mixed by TL — less classic FM stack, more organ/pad grit."
+    },
+    {
+      "aiff": "star5_ex2_con7_fl7_mul1_tl47.aiff",
+      "star_id": 5,
+      "exemplar": 2,
+      "CON": 7,
+      "FL": 7,
+      "Game": "Thunder Fox",
+      "Name": "Instrument 8",
+      "share_within_con": 0.0097,
+      "narrative": "Alg.7 is mostly additive; feedback on M1 becomes the main spice. The modal terna here often reads as FL-driven character with carriers mixed by TL — less classic FM stack, more organ/pad grit."
+    }
+  ]
+}

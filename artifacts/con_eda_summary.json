@@ -1,0 +1,907 @@
+{
+  "n_presets": 59047,
+  "source": "data\\processed\\all_instruments_final.csv",
+  "dedup": "drop_duplicates on non-TL params within Filename",
+  "role_by_con": {
+    "0": {
+      "label": "1\u21922\u21923\u21924 serial",
+      "primary_mod": "M2",
+      "primary_car": "C2",
+      "modulators": [
+        "M1",
+        "C1",
+        "M2"
+      ],
+      "carriers": [
+        "C2"
+      ]
+    },
+    "1": {
+      "label": "1\u21923\u21924 + 2\u21924",
+      "primary_mod": "M2",
+      "primary_car": "C2",
+      "modulators": [
+        "M1",
+        "C1",
+        "M2"
+      ],
+      "carriers": [
+        "C2"
+      ]
+    },
+    "2": {
+      "label": "1\u21924 + 2\u21923\u21924",
+      "primary_mod": "C1",
+      "primary_car": "C2",
+      "modulators": [
+        "M1",
+        "C1",
+        "M2"
+      ],
+      "carriers": [
+        "C2"
+      ]
+    },
+    "3": {
+      "label": "1\u21922\u21924 + 3\u21924",
+      "primary_mod": "C1",
+      "primary_car": "C2",
+      "modulators": [
+        "M1",
+        "C1",
+        "M2"
+      ],
+      "carriers": [
+        "C2"
+      ]
+    },
+    "4": {
+      "label": "1\u21922 + 3\u21924 (two FM voices)",
+      "primary_mod": "M1",
+      "primary_car": "C1",
+      "modulators": [
+        "M1",
+        "M2"
+      ],
+      "carriers": [
+        "C1",
+        "C2"
+      ]
+    },
+    "5": {
+      "label": "1\u21922+3+4 (one mod, many carriers)",
+      "primary_mod": "M1",
+      "primary_car": "C1",
+      "modulators": [
+        "M1"
+      ],
+      "carriers": [
+        "C1",
+        "M2",
+        "C2"
+      ]
+    },
+    "6": {
+      "label": "1\u21922 + 3 + 4",
+      "primary_mod": "M1",
+      "primary_car": "C1",
+      "modulators": [
+        "M1"
+      ],
+      "carriers": [
+        "C1",
+        "M2",
+        "C2"
+      ]
+    },
+    "7": {
+      "label": "1+2+3+4 additive (FL on M1)",
+      "primary_mod": "M1",
+      "primary_car": "C1",
+      "modulators": [
+        "M1"
+      ],
+      "carriers": [
+        "M1",
+        "C1",
+        "M2",
+        "C2"
+      ]
+    }
+  },
+  "star_definition": "Within each CON: modal (FL, MUL_primary_mod, TL_primary_car)",
+  "stars": [
+    {
+      "CON": 4,
+      "rank": 1,
+      "FL": 7,
+      "MUL_mod": 1,
+      "TL_car": 24,
+      "count": 157,
+      "share_within_con": 0.0088,
+      "n_con": 17849,
+      "topology": "1\u21922 + 3\u21924 (two FM voices)",
+      "primary_mod": "M1",
+      "primary_car": "C1",
+      "narrative": "Workhorse Alg.4: two parallel FM voices. Modal FL+MUL_mod+TL_car shows the default Genesis patch grammar \u2014 often max (or high) feedback on M1 with a usable carrier level so the voice still cuts on small TVs."
+    },
+    {
+      "CON": 2,
+      "rank": 1,
+      "FL": 7,
+      "MUL_mod": 1,
+      "TL_car": 20,
+      "count": 92,
+      "share_within_con": 0.0084,
+      "n_con": 10921,
+      "topology": "1\u21924 + 2\u21923\u21924",
+      "primary_mod": "C1",
+      "primary_car": "C2",
+      "narrative": "Alg.2 stacks modulation into one carrier (C2). The modal terna tends to push richer, more intertwined spectra \u2014 denser leads/basses when composers leave the Alg.4 comfort zone."
+    },
+    {
+      "CON": 5,
+      "rank": 1,
+      "FL": 7,
+      "MUL_mod": 1,
+      "TL_car": 24,
+      "count": 189,
+      "share_within_con": 0.0231,
+      "n_con": 8188,
+      "topology": "1\u21922+3+4 (one mod, many carriers)",
+      "primary_mod": "M1",
+      "primary_car": "C1",
+      "narrative": "Alg.5: one modulator (M1) feeds multiple carriers \u2014 the Pulseman-style brand. A sharp modal combo means a shared wiring habit: bright, harmonically busy patches from a single mod source."
+    },
+    {
+      "CON": 0,
+      "rank": 3,
+      "FL": 7,
+      "MUL_mod": 1,
+      "TL_car": 16,
+      "count": 85,
+      "share_within_con": 0.0102,
+      "n_con": 8363,
+      "topology": "1\u21922\u21923\u21924 serial",
+      "primary_mod": "M2",
+      "primary_car": "C2",
+      "narrative": "Alg.0 is fully serial (1\u21922\u21923\u21924). Modal choices often keep the final carrier audible while earlier ops sculpt harmonics \u2014 a more 'chained' FM colour than the two-voice Alg.4 default."
+    },
+    {
+      "CON": 7,
+      "rank": 5,
+      "FL": 7,
+      "MUL_mod": 1,
+      "TL_car": 47,
+      "count": 16,
+      "share_within_con": 0.0097,
+      "n_con": 1657,
+      "topology": "1+2+3+4 additive (FL on M1)",
+      "primary_mod": "M1",
+      "primary_car": "C1",
+      "narrative": "Alg.7 is mostly additive; feedback on M1 becomes the main spice. The modal terna here often reads as FL-driven character with carriers mixed by TL \u2014 less classic FM stack, more organ/pad grit."
+    }
+  ],
+  "exemplars": [
+    {
+      "star_id": 1,
+      "exemplar": 1,
+      "CON": 4,
+      "FL": 7,
+      "MUL_mod": 1,
+      "TL_car": 24,
+      "Game": "Battle Golfer Yui",
+      "Name": "Instrument 1",
+      "Filename": "Battle_Golfer_Yui_-_22_-_Mad_Professor.opm",
+      "topology": "1\u21922 + 3\u21924 (two FM voices)",
+      "narrative": "Workhorse Alg.4: two parallel FM voices. Modal FL+MUL_mod+TL_car shows the default Genesis patch grammar \u2014 often max (or high) feedback on M1 with a usable carrier level so the voice still cuts on small TVs.",
+      "share_within_con": 0.0088,
+      "aiff": "star1_ex1_con4_fl7_mul1_tl24.aiff",
+      "params": {
+        "algorithm": 4,
+        "feedback": 7,
+        "ams": 0,
+        "pms": 0,
+        "lfrq": 0,
+        "operators": {
+          "m1": {
+            "ar": 31,
+            "d1r": 10,
+            "d2r": 1,
+            "rr": 15,
+            "d1l": 1,
+            "tl": 19,
+            "ks": 3,
+            "mul": 1,
+            "dt1": 3,
+            "ams_en": 0
+          },
+          "c1": {
+            "ar": 7,
+            "d1r": 1,
+            "d2r": 2,
+            "rr": 15,
+            "d1l": 2,
+            "tl": 24,
+            "ks": 0,
+            "mul": 1,
+            "dt1": 3,
+            "ams_en": 0
+          },
+          "m2": {
+            "ar": 24,
+            "d1r": 12,
+            "d2r": 8,
+            "rr": 15,
+            "d1l": 4,
+            "tl": 42,
+            "ks": 0,
+            "mul": 14,
+            "dt1": 3,
+            "ams_en": 0
+          },
+          "c2": {
+            "ar": 24,
+            "d1r": 4,
+            "d2r": 1,
+            "rr": 15,
+            "d1l": 2,
+            "tl": 24,
+            "ks": 0,
+            "mul": 1,
+            "dt1": 3,
+            "ams_en": 0
+          }
+        }
+      }
+    },
+    {
+      "star_id": 1,
+      "exemplar": 2,
+      "CON": 4,
+      "FL": 7,
+      "MUL_mod": 1,
+      "TL_car": 24,
+      "Game": "Battle Mania",
+      "Name": "Instrument 0",
+      "Filename": "Battle_Mania_-_16_-_Boss_Theme_3.opm",
+      "topology": "1\u21922 + 3\u21924 (two FM voices)",
+      "narrative": "Workhorse Alg.4: two parallel FM voices. Modal FL+MUL_mod+TL_car shows the default Genesis patch grammar \u2014 often max (or high) feedback on M1 with a usable carrier level so the voice still cuts on small TVs.",
+      "share_within_con": 0.0088,
+      "aiff": "star1_ex2_con4_fl7_mul1_tl24.aiff",
+      "params": {
+        "algorithm": 4,
+        "feedback": 7,
+        "ams": 0,
+        "pms": 0,
+        "lfrq": 0,
+        "operators": {
+          "m1": {
+            "ar": 18,
+            "d1r": 8,
+            "d2r": 4,
+            "rr": 4,
+            "d1l": 1,
+            "tl": 22,
+            "ks": 1,
+            "mul": 1,
+            "dt1": 6,
+            "ams_en": 0
+          },
+          "c1": {
+            "ar": 19,
+            "d1r": 0,
+            "d2r": 0,
+            "rr": 7,
+            "d1l": 0,
+            "tl": 24,
+            "ks": 1,
+            "mul": 2,
+            "dt1": 2,
+            "ams_en": 0
+          },
+          "m2": {
+            "ar": 18,
+            "d1r": 8,
+            "d2r": 4,
+            "rr": 4,
+            "d1l": 1,
+            "tl": 18,
+            "ks": 1,
+            "mul": 0,
+            "dt1": 2,
+            "ams_en": 0
+          },
+          "c2": {
+            "ar": 19,
+            "d1r": 0,
+            "d2r": 0,
+            "rr": 6,
+            "d1l": 0,
+            "tl": 24,
+            "ks": 1,
+            "mul": 0,
+            "dt1": 6,
+            "ams_en": 0
+          }
+        }
+      }
+    },
+    {
+      "star_id": 2,
+      "exemplar": 1,
+      "CON": 2,
+      "FL": 7,
+      "MUL_mod": 1,
+      "TL_car": 20,
+      "Game": "Arcus Odyssey",
+      "Name": "Instrument 2",
+      "Filename": "Arcus_Odyssey_-_16_-_Act_6-1_-_Dark_Minions.opm",
+      "topology": "1\u21924 + 2\u21923\u21924",
+      "narrative": "Alg.2 stacks modulation into one carrier (C2). The modal terna tends to push richer, more intertwined spectra \u2014 denser leads/basses when composers leave the Alg.4 comfort zone.",
+      "share_within_con": 0.0084,
+      "aiff": "star2_ex1_con2_fl7_mul1_tl20.aiff",
+      "params": {
+        "algorithm": 2,
+        "feedback": 7,
+        "ams": 0,
+        "pms": 0,
+        "lfrq": 0,
+        "operators": {
+          "m1": {
+            "ar": 13,
+            "d1r": 4,
+            "d2r": 9,
+            "rr": 9,
+            "d1l": 2,
+            "tl": 30,
+            "ks": 2,
+            "mul": 1,
+            "dt1": 0,
+            "ams_en": 0
+          },
+          "c1": {
+            "ar": 31,
+            "d1r": 9,
+            "d2r": 0,
+            "rr": 5,
+            "d1l": 12,
+            "tl": 44,
+            "ks": 0,
+            "mul": 1,
+            "dt1": 0,
+            "ams_en": 0
+          },
+          "m2": {
+            "ar": 13,
+            "d1r": 6,
+            "d2r": 0,
+            "rr": 6,
+            "d1l": 1,
+            "tl": 46,
+            "ks": 0,
+            "mul": 1,
+            "dt1": 6,
+            "ams_en": 0
+          },
+          "c2": {
+            "ar": 20,
+            "d1r": 31,
+            "d2r": 0,
+            "rr": 6,
+            "d1l": 0,
+            "tl": 20,
+            "ks": 0,
+            "mul": 1,
+            "dt1": 6,
+            "ams_en": 0
+          }
+        }
+      }
+    },
+    {
+      "star_id": 2,
+      "exemplar": 2,
+      "CON": 2,
+      "FL": 7,
+      "MUL_mod": 1,
+      "TL_car": 20,
+      "Game": "Bishoujo Senshi Sailor Moon",
+      "Name": "Instrument 3",
+      "Filename": "Bishoujo_Senshi_Sailor_Moon_-_31_-_Staff_Roll.opm",
+      "topology": "1\u21924 + 2\u21923\u21924",
+      "narrative": "Alg.2 stacks modulation into one carrier (C2). The modal terna tends to push richer, more intertwined spectra \u2014 denser leads/basses when composers leave the Alg.4 comfort zone.",
+      "share_within_con": 0.0084,
+      "aiff": "star2_ex2_con2_fl7_mul1_tl20.aiff",
+      "params": {
+        "algorithm": 2,
+        "feedback": 7,
+        "ams": 0,
+        "pms": 0,
+        "lfrq": 0,
+        "operators": {
+          "m1": {
+            "ar": 25,
+            "d1r": 8,
+            "d2r": 11,
+            "rr": 0,
+            "d1l": 0,
+            "tl": 21,
+            "ks": 0,
+            "mul": 1,
+            "dt1": 3,
+            "ams_en": 0
+          },
+          "c1": {
+            "ar": 22,
+            "d1r": 31,
+            "d2r": 6,
+            "rr": 15,
+            "d1l": 0,
+            "tl": 24,
+            "ks": 0,
+            "mul": 1,
+            "dt1": 1,
+            "ams_en": 0
+          },
+          "m2": {
+            "ar": 23,
+            "d1r": 31,
+            "d2r": 12,
+            "rr": 15,
+            "d1l": 0,
+            "tl": 41,
+            "ks": 0,
+            "mul": 1,
+            "dt1": 3,
+            "ams_en": 0
+          },
+          "c2": {
+            "ar": 21,
+            "d1r": 7,
+            "d2r": 16,
+            "rr": 15,
+            "d1l": 7,
+            "tl": 20,
+            "ks": 0,
+            "mul": 1,
+            "dt1": 3,
+            "ams_en": 0
+          }
+        }
+      }
+    },
+    {
+      "star_id": 3,
+      "exemplar": 1,
+      "CON": 5,
+      "FL": 7,
+      "MUL_mod": 1,
+      "TL_car": 24,
+      "Game": "Arcus Odyssey",
+      "Name": "Instrument 4",
+      "Filename": "Arcus_Odyssey_-_12_-_Act_3-1_-_Pyramid.opm",
+      "topology": "1\u21922+3+4 (one mod, many carriers)",
+      "narrative": "Alg.5: one modulator (M1) feeds multiple carriers \u2014 the Pulseman-style brand. A sharp modal combo means a shared wiring habit: bright, harmonically busy patches from a single mod source.",
+      "share_within_con": 0.0231,
+      "aiff": "star3_ex1_con5_fl7_mul1_tl24.aiff",
+      "params": {
+        "algorithm": 5,
+        "feedback": 7,
+        "ams": 0,
+        "pms": 0,
+        "lfrq": 0,
+        "operators": {
+          "m1": {
+            "ar": 21,
+            "d1r": 2,
+            "d2r": 4,
+            "rr": 8,
+            "d1l": 3,
+            "tl": 27,
+            "ks": 0,
+            "mul": 1,
+            "dt1": 0,
+            "ams_en": 0
+          },
+          "c1": {
+            "ar": 31,
+            "d1r": 12,
+            "d2r": 4,
+            "rr": 8,
+            "d1l": 15,
+            "tl": 24,
+            "ks": 1,
+            "mul": 2,
+            "dt1": 6,
+            "ams_en": 0
+          },
+          "m2": {
+            "ar": 31,
+            "d1r": 5,
+            "d2r": 4,
+            "rr": 8,
+            "d1l": 3,
+            "tl": 24,
+            "ks": 3,
+            "mul": 1,
+            "dt1": 1,
+            "ams_en": 0
+          },
+          "c2": {
+            "ar": 16,
+            "d1r": 5,
+            "d2r": 4,
+            "rr": 10,
+            "d1l": 15,
+            "tl": 23,
+            "ks": 0,
+            "mul": 2,
+            "dt1": 3,
+            "ams_en": 0
+          }
+        }
+      }
+    },
+    {
+      "star_id": 3,
+      "exemplar": 2,
+      "CON": 5,
+      "FL": 7,
+      "MUL_mod": 1,
+      "TL_car": 24,
+      "Game": "ATP Tour Championship Tennis",
+      "Name": "Instrument 5",
+      "Filename": "ATP_Tour_Championship_Tennis_-_13_-_Bracket,_Results.opm",
+      "topology": "1\u21922+3+4 (one mod, many carriers)",
+      "narrative": "Alg.5: one modulator (M1) feeds multiple carriers \u2014 the Pulseman-style brand. A sharp modal combo means a shared wiring habit: bright, harmonically busy patches from a single mod source.",
+      "share_within_con": 0.0231,
+      "aiff": "star3_ex2_con5_fl7_mul1_tl24.aiff",
+      "params": {
+        "algorithm": 5,
+        "feedback": 7,
+        "ams": 0,
+        "pms": 0,
+        "lfrq": 0,
+        "operators": {
+          "m1": {
+            "ar": 16,
+            "d1r": 8,
+            "d2r": 5,
+            "rr": 15,
+            "d1l": 0,
+            "tl": 26,
+            "ks": 0,
+            "mul": 1,
+            "dt1": 3,
+            "ams_en": 0
+          },
+          "c1": {
+            "ar": 31,
+            "d1r": 8,
+            "d2r": 0,
+            "rr": 11,
+            "d1l": 1,
+            "tl": 24,
+            "ks": 0,
+            "mul": 2,
+            "dt1": 1,
+            "ams_en": 0
+          },
+          "m2": {
+            "ar": 19,
+            "d1r": 8,
+            "d2r": 3,
+            "rr": 11,
+            "d1l": 1,
+            "tl": 26,
+            "ks": 0,
+            "mul": 3,
+            "dt1": 3,
+            "ams_en": 0
+          },
+          "c2": {
+            "ar": 6,
+            "d1r": 3,
+            "d2r": 0,
+            "rr": 11,
+            "d1l": 1,
+            "tl": 31,
+            "ks": 0,
+            "mul": 1,
+            "dt1": 5,
+            "ams_en": 0
+          }
+        }
+      }
+    },
+    {
+      "star_id": 4,
+      "exemplar": 1,
+      "CON": 0,
+      "FL": 7,
+      "MUL_mod": 1,
+      "TL_car": 16,
+      "Game": "Batman",
+      "Name": "Instrument 5",
+      "Filename": "Batman_-_09_-_Stage_4-2_~Gotham_City_Streets_3~_&_Stage_6-2_~Gotham_Cathedral_2~.opm",
+      "topology": "1\u21922\u21923\u21924 serial",
+      "narrative": "Alg.0 is fully serial (1\u21922\u21923\u21924). Modal choices often keep the final carrier audible while earlier ops sculpt harmonics \u2014 a more 'chained' FM colour than the two-voice Alg.4 default.",
+      "share_within_con": 0.0102,
+      "aiff": "star4_ex1_con0_fl7_mul1_tl16.aiff",
+      "params": {
+        "algorithm": 0,
+        "feedback": 7,
+        "ams": 0,
+        "pms": 0,
+        "lfrq": 0,
+        "operators": {
+          "m1": {
+            "ar": 23,
+            "d1r": 5,
+            "d2r": 1,
+            "rr": 6,
+            "d1l": 1,
+            "tl": 35,
+            "ks": 0,
+            "mul": 7,
+            "dt1": 3,
+            "ams_en": 0
+          },
+          "c1": {
+            "ar": 17,
+            "d1r": 0,
+            "d2r": 1,
+            "rr": 6,
+            "d1l": 0,
+            "tl": 24,
+            "ks": 0,
+            "mul": 6,
+            "dt1": 3,
+            "ams_en": 0
+          },
+          "m2": {
+            "ar": 17,
+            "d1r": 0,
+            "d2r": 1,
+            "rr": 3,
+            "d1l": 0,
+            "tl": 42,
+            "ks": 0,
+            "mul": 1,
+            "dt1": 3,
+            "ams_en": 0
+          },
+          "c2": {
+            "ar": 18,
+            "d1r": 2,
+            "d2r": 1,
+            "rr": 8,
+            "d1l": 3,
+            "tl": 16,
+            "ks": 0,
+            "mul": 1,
+            "dt1": 3,
+            "ams_en": 0
+          }
+        }
+      }
+    },
+    {
+      "star_id": 4,
+      "exemplar": 2,
+      "CON": 0,
+      "FL": 7,
+      "MUL_mod": 1,
+      "TL_car": 16,
+      "Game": "Buster's Hidden Treasure",
+      "Name": "Instrument 7",
+      "Filename": "Buster's_Hidden_Treasure_-_Helper_Two_-_Concord_Condor.opm",
+      "topology": "1\u21922\u21923\u21924 serial",
+      "narrative": "Alg.0 is fully serial (1\u21922\u21923\u21924). Modal choices often keep the final carrier audible while earlier ops sculpt harmonics \u2014 a more 'chained' FM colour than the two-voice Alg.4 default.",
+      "share_within_con": 0.0102,
+      "aiff": "star4_ex2_con0_fl7_mul1_tl16.aiff",
+      "params": {
+        "algorithm": 0,
+        "feedback": 7,
+        "ams": 0,
+        "pms": 0,
+        "lfrq": 0,
+        "operators": {
+          "m1": {
+            "ar": 18,
+            "d1r": 14,
+            "d2r": 3,
+            "rr": 5,
+            "d1l": 6,
+            "tl": 12,
+            "ks": 1,
+            "mul": 1,
+            "dt1": 0,
+            "ams_en": 0
+          },
+          "c1": {
+            "ar": 17,
+            "d1r": 16,
+            "d2r": 2,
+            "rr": 5,
+            "d1l": 5,
+            "tl": 59,
+            "ks": 1,
+            "mul": 2,
+            "dt1": 3,
+            "ams_en": 0
+          },
+          "m2": {
+            "ar": 11,
+            "d1r": 4,
+            "d2r": 0,
+            "rr": 5,
+            "d1l": 2,
+            "tl": 39,
+            "ks": 2,
+            "mul": 1,
+            "dt1": 6,
+            "ams_en": 0
+          },
+          "c2": {
+            "ar": 15,
+            "d1r": 4,
+            "d2r": 0,
+            "rr": 6,
+            "d1l": 0,
+            "tl": 16,
+            "ks": 1,
+            "mul": 1,
+            "dt1": 3,
+            "ams_en": 0
+          }
+        }
+      }
+    },
+    {
+      "star_id": 5,
+      "exemplar": 1,
+      "CON": 7,
+      "FL": 7,
+      "MUL_mod": 1,
+      "TL_car": 47,
+      "Game": "Bram Stoker's Dracula",
+      "Name": "Instrument 12",
+      "Filename": "Bram_Stoker's_Dracula_-_03_-_Vampyre_Book.opm",
+      "topology": "1+2+3+4 additive (FL on M1)",
+      "narrative": "Alg.7 is mostly additive; feedback on M1 becomes the main spice. The modal terna here often reads as FL-driven character with carriers mixed by TL \u2014 less classic FM stack, more organ/pad grit.",
+      "share_within_con": 0.0097,
+      "aiff": "star5_ex1_con7_fl7_mul1_tl47.aiff",
+      "params": {
+        "algorithm": 7,
+        "feedback": 7,
+        "ams": 0,
+        "pms": 0,
+        "lfrq": 0,
+        "operators": {
+          "m1": {
+            "ar": 31,
+            "d1r": 0,
+            "d2r": 5,
+            "rr": 0,
+            "d1l": 0,
+            "tl": 33,
+            "ks": 0,
+            "mul": 1,
+            "dt1": 5,
+            "ams_en": 0
+          },
+          "c1": {
+            "ar": 31,
+            "d1r": 0,
+            "d2r": 5,
+            "rr": 0,
+            "d1l": 0,
+            "tl": 47,
+            "ks": 0,
+            "mul": 4,
+            "dt1": 6,
+            "ams_en": 0
+          },
+          "m2": {
+            "ar": 31,
+            "d1r": 0,
+            "d2r": 5,
+            "rr": 0,
+            "d1l": 0,
+            "tl": 44,
+            "ks": 0,
+            "mul": 8,
+            "dt1": 0,
+            "ams_en": 0
+          },
+          "c2": {
+            "ar": 31,
+            "d1r": 0,
+            "d2r": 5,
+            "rr": 13,
+            "d1l": 0,
+            "tl": 23,
+            "ks": 0,
+            "mul": 0,
+            "dt1": 0,
+            "ams_en": 0
+          }
+        }
+      }
+    },
+    {
+      "star_id": 5,
+      "exemplar": 2,
+      "CON": 7,
+      "FL": 7,
+      "MUL_mod": 1,
+      "TL_car": 47,
+      "Game": "Thunder Fox",
+      "Name": "Instrument 8",
+      "Filename": "Thunder_Fox_-_11_-_Ending.opm",
+      "topology": "1+2+3+4 additive (FL on M1)",
+      "narrative": "Alg.7 is mostly additive; feedback on M1 becomes the main spice. The modal terna here often reads as FL-driven character with carriers mixed by TL \u2014 less classic FM stack, more organ/pad grit.",
+      "share_within_con": 0.0097,
+      "aiff": "star5_ex2_con7_fl7_mul1_tl47.aiff",
+      "params": {
+        "algorithm": 7,
+        "feedback": 7,
+        "ams": 0,
+        "pms": 0,
+        "lfrq": 0,
+        "operators": {
+          "m1": {
+            "ar": 31,
+            "d1r": 6,
+            "d2r": 2,
+            "rr": 5,
+            "d1l": 1,
+            "tl": 42,
+            "ks": 2,
+            "mul": 1,
+            "dt1": 3,
+            "ams_en": 0
+          },
+          "c1": {
+            "ar": 13,
+            "d1r": 8,
+            "d2r": 4,
+            "rr": 5,
+            "d1l": 1,
+            "tl": 47,
+            "ks": 2,
+            "mul": 1,
+            "dt1": 5,
+            "ams_en": 0
+          },
+          "m2": {
+            "ar": 15,
+            "d1r": 18,
+            "d2r": 4,
+            "rr": 5,
+            "d1l": 2,
+            "tl": 47,
+            "ks": 2,
+            "mul": 1,
+            "dt1": 3,
+            "ams_en": 0
+          },
+          "c2": {
+            "ar": 31,
+            "d1r": 18,
+            "d2r": 4,
+            "rr": 5,
+            "d1l": 2,
+            "tl": 42,
+            "ks": 2,
+            "mul": 1,
+            "dt1": 4,
+            "ams_en": 0
+          }
+        }
+      }
+    }
+  ]
+}

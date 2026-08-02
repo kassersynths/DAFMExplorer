@@ -48,3 +48,10 @@ webapp/dist-ssr/
 # OS
 Thumbs.db
 .DS_Store
+
+# Local speaker notes / TTS drafts (not for GitHub)
+Ludo2026-DAFMExplorer-LaTeX/notes/
+
+# Author portraits (local only — do not push)
+Ludo2026-DAFMExplorer-LaTeX/assets/photo_abraham.jpg
+Ludo2026-DAFMExplorer-LaTeX/assets/photo_maria.jpg

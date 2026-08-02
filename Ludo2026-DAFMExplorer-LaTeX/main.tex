@@ -12,20 +12,22 @@
 \else
   \usepackage{fontspec}
   % League Spartan approximates Google Font ``Spartan'' on the site
+  % AutoFakeSlant (not ItalicFont=Regular): avoids Acrobat
+  % ``Cannot extract the embedded font …Oxanium-Regular'' with LuaTeX subsets.
   \setsansfont{LeagueSpartan}[
     Path = assets/fonts/,
     UprightFont = *-Regular.ttf,
     BoldFont = *-Bold.ttf,
-    ItalicFont = *-Regular.ttf,
-    BoldItalicFont = *-Bold.ttf,
+    AutoFakeSlant = 0.2,
     Ligatures = TeX
   ]
+  % CFF/OTF (not TTF): Acrobat often fails extracting LuaTeX TrueType subsets.
   \setmainfont{Oxanium}[
     Path = assets/fonts/,
-    UprightFont = *-Regular.ttf,
-    BoldFont = *-Bold.ttf,
-    ItalicFont = *-Regular.ttf,
-    BoldItalicFont = *-Bold.ttf,
+    Extension = .otf,
+    UprightFont = *-Regular,
+    BoldFont = *-Bold,
+    AutoFakeSlant = 0.2,
     Ligatures = TeX
   ]
   \renewcommand{\familydefault}{\rmdefault}
@@ -33,6 +35,7 @@
 \usepackage{booktabs}
 \usepackage{graphicx}
 \usepackage{hyperref}
+\usepackage{multimedia}
 \usepackage{tikz}
 \usepackage{xcolor}
 
@@ -116,6 +119,24 @@
   \end{center}
 }
 
+% Inline Adobe sound (AIFF + Beamer \sound). Needs LuaLaTeX/pdfLaTeX, not XeLaTeX.
+% #1 = cue label (S1), #2 = AIFF path, #3 = short caption, #4 = sound label id
+\newcommand{\wavbtn}[4]{%
+  \IfFileExists{#2}{%
+    \sound[inlinesound,label=#4,encoding=Signed,samplingrate=44100,channels=1,bitspersample=16]{%
+      \tikz[baseline=(t.base)]{%
+        \node[fill=kasserGold,text=kasserBlack,inner sep=3pt,rounded corners=1pt,font=\scriptsize\bfseries] (t)
+          {$\blacktriangleright$ #1~~{\normalfont\scriptsize #3}};
+      }%
+    }{#2}%
+  }{%
+    \tikz[baseline=(t.base)]{%
+      \node[fill=kasserGray,text=white,inner sep=3pt,rounded corners=1pt,font=\scriptsize] (t)
+        {#1 missing};
+    }%
+  }%
+}
+
 \newcommand{\photoplaceholder}[1]{%
   \fcolorbox{kasserCyan}{kasserPanel}{%
     \parbox[c][2.8cm][c]{0.92\linewidth}{%
@@ -127,20 +148,24 @@
 \title[DAFMExplorer @ Ludo2026]{Exploring the Sonic Universe of the Sega Genesis}
 \subtitle{Data Science, FM Synthesis, and 93{,}000+ Presets}
 \author[Casas \& Cerro]{%
-  Abraham Casas\\\small Electronics \& CTO, Kasser Synths
-  \and
-  Maria Cerro\\\small Design \& CEO, Kasser Synths}
-\institute[Kasser Synths]{Kasser Synths\\[1mm]{\scriptsize Ludo2026 --- Session 9: \textit{Synthesis, Served Three Ways}}}
-\date{August 2026}
-\titlegraphic{%
+  \texorpdfstring{%
+    Abraham Casas%
+    \and
+    Maria Cerro%
+  }{Abraham Casas \& Maria Cerro}%
+}
+\institute[Kasser Synths]{%
   \IfFileExists{assets/logo-kasser-synths.png}{%
-    \includegraphics[height=1.05cm,keepaspectratio]{assets/logo-kasser-synths.png}%
+    \includegraphics[height=0.95cm,keepaspectratio]{assets/logo-kasser-synths.png}%
   }{%
     \IfFileExists{assets/logo-kasser-synths.svg}{%
-      \includegraphics[height=1.05cm,keepaspectratio]{assets/logo-kasser-synths.svg}%
+      \includegraphics[height=0.95cm,keepaspectratio]{assets/logo-kasser-synths.svg}%
     }{}%
-  }%
+  }\\[2mm]
+  {\scriptsize Ludo2026 --- Session 9: \textit{Synthesis, Served Three Ways}}%
 }
+\date{August 2026}
+\titlegraphic{}
 
 \begin{document}
 
@@ -152,21 +177,37 @@
 %---------------------------------------------------------------------
 \begin{frame}{Who we are}
   \begin{columns}[T,onlytextwidth]
-    \column{0.48\textwidth}
+    \column{0.30\textwidth}
     \centering
-    \IfFileExists{assets/photo_abraham.png}{%
-      \includegraphics[height=2.8cm,keepaspectratio]{assets/photo_abraham.png}%
-    }{\photoplaceholder{assets/photo\_abraham.png}}
+    \IfFileExists{assets/photo_abraham.jpg}{%
+      \includegraphics[height=2.8cm,keepaspectratio]{assets/photo_abraham.jpg}%
+    }{%
+      \IfFileExists{assets/photo_abraham.png}{%
+        \includegraphics[height=2.8cm,keepaspectratio]{assets/photo_abraham.png}%
+      }{\photoplaceholder{assets/photo\_abraham.jpg}}%
+    }
     \vspace{1mm}
 
     \textbf{Abraham Casas}\\
     {\small Electronics \& CTO}\\
     {\scriptsize Presenting today}
-    \column{0.48\textwidth}
+    \column{0.36\textwidth}
     \centering
-    \IfFileExists{assets/photo_maria.png}{%
-      \includegraphics[height=2.8cm,keepaspectratio]{assets/photo_maria.png}%
-    }{\photoplaceholder{assets/photo\_maria.png}}
+    \IfFileExists{assets/dafm_synths.jpg}{%
+      \includegraphics[height=3.2cm,keepaspectratio]{assets/dafm_synths.jpg}%
+    }{}
+    \vspace{1mm}
+
+    {\scriptsize\color{kasserMuted}DAFM SYNTH ARCADE, GENESIS \& BLASTER}
+    \column{0.30\textwidth}
+    \centering
+    \IfFileExists{assets/photo_maria.jpg}{%
+      \includegraphics[height=2.8cm,keepaspectratio]{assets/photo_maria.jpg}%
+    }{%
+      \IfFileExists{assets/photo_maria.png}{%
+        \includegraphics[height=2.8cm,keepaspectratio]{assets/photo_maria.png}%
+      }{\photoplaceholder{assets/photo\_maria.jpg}}%
+    }
     \vspace{1mm}
 
     \textbf{Maria Cerro}\\
@@ -174,179 +215,350 @@
   \end{columns}
   \vspace{2mm}
   \begin{block}{Kasser Synths}
-    A small studio exploring Yamaha FM chips and the sonic legacy of 1980s--90s games.\\
-    \textbf{DAFMExplorer} is our open project for reading that legacy as structured data --- and listening to it again.
+    {\small We bring three Yamaha FM worlds back into musicians' hands:
+    the \textbf{YM2151} (OPM) of the arcades, the \textbf{YM2612}/\textbf{YM3438} (OPN) of the Mega Drive / Genesis,
+    and the \textbf{YMF262} (OPL3) that coloured 1990s Sound Blaster PCs.
+    \textit{\textbf{Today we focus on the Genesis.}}}
   \end{block}
 \end{frame}
 
 %---------------------------------------------------------------------
-\begin{frame}{A platform's voice is also its presets}
+\begin{frame}{Sega's chip bet --- YM2612 + SN76489}
   \begin{columns}[c,onlytextwidth]
-    \column{0.48\textwidth}
+    \column{0.40\textwidth}
+    \centering
     \IfFileExists{assets/Sega-Genesis-Mod1-Bare.jpg}{%
-      \includegraphics[width=\linewidth,height=0.55\textheight,keepaspectratio]{assets/Sega-Genesis-Mod1-Bare.jpg}%
+      \includegraphics[width=\linewidth,height=0.38\textheight,keepaspectratio]{assets/Sega-Genesis-Mod1-Bare.jpg}%
     }{}
-    \column{0.50\textwidth}
-    Beyond melodies and arrangements, Genesis music is built from \textbf{programmed FM timbres}:
+    \vspace{1mm}
+    \IfFileExists{assets/YM2612-chip.jpg}{%
+      \includegraphics[width=0.70\linewidth,height=0.20\textheight,keepaspectratio]{assets/YM2612-chip.jpg}%
+    }{}
+    \vspace{0.5mm}\\{\scriptsize YM2612 / YM3438 (OPN2)}
+    \column{0.58\textwidth}
+    {\small Genesis audio follows arcade lineage (e.g.\ System~16): 68000 + Z80 + Yamaha FM --- scaled for the living room.}\\[1.5mm]
     \begin{itemize}
-      \item Reused across tracks and scenes
-      \item Tuned for tiny TV speakers
-      \item Authored under the constraints of one chip
+      \item \textbf{YM2612} / \textbf{YM3438} --- 6-ch.\ 4-op FM
+      \item \textbf{SN76489} --- SG-1000 / Mark~III / Master System PSG
     \end{itemize}
-    \vspace{2mm}
-    {\small Those presets are creative decisions --- and historical evidence.}
+    \vspace{1mm}
+    {\scriptsize\itshape ``We already used the Yamaha FM sound chip for arcade games, while the TI sound generator was employed to retain SG-1000 and Mark~III compatibility.''}\\[0.5mm]
+    {\tiny\color{kasserMuted}--- Masami Ishikawa (Mega Drive hardware), Polygon interview, 2015}\\[1.5mm]
+    {\small OPN2 is \textbf{console-scale} OPN (not YM2151 / YM2608): onboard DAC, fewer extras. Trade-off: ``low-volume'' grit.}
   \end{columns}
 \end{frame}
 
 %---------------------------------------------------------------------
-\begin{frame}{From Chowning to the living room}
+\begin{frame}{What is FM? --- Chowning's discovery}
   \begin{columns}[T,onlytextwidth]
-    \column{0.32\textwidth}
+    \column{0.34\textwidth}
     \centering
     \IfFileExists{assets/John-Chowning-Stanford.jpg}{%
-      \includegraphics[width=\linewidth,height=0.38\textheight,keepaspectratio]{assets/John-Chowning-Stanford.jpg}%
+      \includegraphics[width=\linewidth,height=0.42\textheight,keepaspectratio]{assets/John-Chowning-Stanford.jpg}%
     }{}
-    \vspace{1mm}\\{\scriptsize Chowning / CCRMA}
+    \vspace{1mm}\\{\scriptsize John Chowning / Stanford}
     \column{0.32\textwidth}
     \centering
     \IfFileExists{assets/Yamaha-DX7.jpg}{%
-      \includegraphics[width=\linewidth,height=0.38\textheight,keepaspectratio]{assets/Yamaha-DX7.jpg}%
+      \includegraphics[width=\linewidth,height=0.42\textheight,keepaspectratio]{assets/Yamaha-DX7.jpg}%
     }{}
-    \vspace{1mm}\\{\scriptsize Yamaha DX7 (6 ops)}
+    \vspace{1mm}\\{\scriptsize Yamaha DX7 (1983)}
     \column{0.32\textwidth}
-    \centering
-    \IfFileExists{assets/YM2612-chip.jpg}{%
-      \includegraphics[width=\linewidth,height=0.38\textheight,keepaspectratio]{assets/YM2612-chip.jpg}%
-    }{}
-    \vspace{1mm}\\{\scriptsize YM2612: \textbf{4 ops, 8 algorithms}}
+    {\small
+    \textbf{FM in one sentence:}\\[0.8mm]
+    one oscillator changes another's \textit{frequency} so fast that we hear new \textbf{timbre}, not vibrato.\\[2mm]
+    \textbf{1967:} ear discovery first; maths later.\\[1.5mm]
+    Stanford patents it --- one of its \textbf{most lucrative} licenses ($\sim$\$20M+ to Yamaha).\\[1.5mm]
+    U.S.\ organ makers pass; \textbf{Yamaha} builds the DX7.
+    }
   \end{columns}
-  \vspace{3mm}
-  Same mathematical idea --- frequency modulation --- different creative solutions on every game.
+  \vspace{2mm}
+  {\scriptsize Sources: Yamaha Hub, ``Discovering Digital FM: John Chowning Remembers'' (Kovarsky, 2020);
+  Stanford OTL --- FM among the university's top royalty generators.}
 \end{frame}
 
 %---------------------------------------------------------------------
-\begin{frame}{The underexplored archive}
+\begin{frame}{Anatomy of a FM synthesis preset}
+  \framesubtitle{Use case: YM2612 / YM3438 (OPN2 / OPN2C)}
+  A preset is one \textbf{channel recipe}: how four operators are wired, levelled, and enveloped.
+  \vspace{0.5mm}
   \begin{columns}[T,onlytextwidth]
-    \column{0.55\textwidth}
-    \begin{itemize}
-      \item \textbf{VGM}: exact chip-command recordings
-      \item \textbf{Project2612} / VGMrips: preservation at scale
-      \item \textbf{DrWashington} collection: OPM presets extracted from those VGMs
-    \end{itemize}
-    \vspace{2mm}
-    \begin{alertblock}{93{,}000+ presets}
-      A huge corpus of YM2612 voices --- still underexplored as \textbf{structured data} in ludomusicology.
-    \end{alertblock}
     \column{0.42\textwidth}
+    {\small
+    \textbf{Channel:} \textbf{ALG/CON} (wiring), \textbf{FB}, L/R, AMS/PMS.\\[1mm]
+    \textbf{Each op:} DT/MUL, TL, envelope (KS, AR, DR, SR, SL, RR), AM, SSG-EG.}\\[2mm]
+    {\small\textbf{Hear the idea}:}\\[1mm]
+    \wavbtn{Carrier}{videos/presets/demo_carrier_only.aiff}{almost sine}{demo_car}%
+    \quad
+    \wavbtn{FM}{videos/presets/demo_fm_stack.aiff}{op$\rightarrow$op}{demo_fm}\\[1mm]
+    \wavbtn{AM}{videos/presets/demo_am_lfo.aiff}{LFO tremolo}{demo_am}%
+    \quad
+    \wavbtn{FB}{videos/presets/demo_feedback.aiff}{feedback}{demo_fb}\\[1.5mm]
+    {\scriptsize\color{kasserMuted}
+    \textbf{ALG} chooses who modulates whom.\\
+    M~=~modulator, C~=~carrier (audible).}\\[0.5mm]
+    \column{0.56\textwidth}
     \centering
-    \IfFileExists{assets/project2612-logo.png}{%
-      \includegraphics[width=0.85\linewidth,height=0.22\textheight,keepaspectratio]{assets/project2612-logo.png}%
-    }{}
-    \vspace{2mm}
-    \IfFileExists{assets/vgmrips-website.png}{%
-      \includegraphics[width=0.95\linewidth,height=0.28\textheight,keepaspectratio]{assets/vgmrips-website.png}%
-    }{}
+    \IfFileExists{assets/ym2612_algorithms.png}{%
+      \includegraphics[width=\linewidth,height=0.72\textheight,keepaspectratio]{assets/ym2612_algorithms.png}%
+    }{%
+      \IfFileExists{assets/fig_algorithms_schematic.png}{%
+        \includegraphics[width=\linewidth,height=0.72\textheight,keepaspectratio]{assets/fig_algorithms_schematic.png}%
+      }{}%
+    }\\[0.5mm]
+    {\scriptsize\color{kasserMuted} YM2608/OPN algorithms (same 8 wirings as YM2612).}
   \end{columns}
 \end{frame}
 
 %---------------------------------------------------------------------
-\begin{frame}{Live listening kit --- games, music, presets}
-  Four short live moments (VGM track $\rightarrow$ related preset). Keep each under $\sim$20--25\,s.
+\begin{frame}{DT / MUL and TL --- pitch class \& mix level}
+  \textbf{DT (Detune) + MUL (Multiple)}
+  \begin{itemize}
+    \item Each operator is a sine at a harmonic ratio of the note
+    \item \textbf{MUL} $=0$ is a special half-ratio; $1$ = fundamental; $2,3,\ldots$ = overtones
+    \item \textbf{DT} fine-shifts that ratio (chorus / inharmonic edge)
+    \item Modulator MUL $\rightarrow$ which sidebands; carrier MUL $\rightarrow$ the pitch you hear
+  \end{itemize}
+  \vspace{1.5mm}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.48\textwidth}
+    \textbf{TL (Total Level)} --- 0 loud $\ldots$ 127 silent
+    \begin{itemize}
+      \item \textbf{Carrier TL} $\approx$ loudness in the mix
+      \item \textbf{Modulator TL} $\approx$ FM richness (more sidebands)
+    \end{itemize}
+    \column{0.50\textwidth}
+    {\small
+    \textbf{Rule of thumb}\\[0.8mm]
+    Carrier TL $=$ volume fader.\\
+    Modulator TL $=$ FM index (brighter, not just louder).\\[1mm]
+    {\scriptsize Later TL-dedup: same wiring + envelopes, different TL $\approx$ same instrument at another mix level.}
+    }
+  \end{columns}
+\end{frame}
+
+%---------------------------------------------------------------------
+\begin{frame}{Envelopes --- KS, AR, DR, SR, SL, RR (+ AM)}
+  {\small Each operator has its own envelope (not one ADSR for the whole patch).}
+  \vspace{0.5mm}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.46\textwidth}
+    {\scriptsize
+    \begin{tabular}{@{}lp{0.72\linewidth}@{}}
+    \toprule
+    \textbf{Param} & \textbf{What it does} \\
+    \midrule
+    \textbf{KS} & Speeds envelope on higher notes \\
+    \textbf{AR} & Rise from silence (31 $=$ instant) \\
+    \textbf{DR} & Fall from peak toward sustain \\
+    \textbf{SL} & Where that first decay lands \\
+    \textbf{SR} & Drift while held (0 $=$ freeze) \\
+    \textbf{RR} & Fall after key-off \\
+    \textbf{AM} & Op level breathes with the LFO \\
+    \bottomrule
+    \end{tabular}
+    }
+    \vspace{2mm}
+    \begin{block}{Musical picture}
+      {\scriptsize Pluck $=$ fast AR + fast modulator decays; pad $=$ slow AR on carriers.
+      Modulator envelopes $\rightarrow$ \textit{colour}; carriers $\rightarrow$ \textit{loudness}.}
+    \end{block}
+    \column{0.52\textwidth}
+    \centering
+    \IfFileExists{assets/ym2612_envelope.png}{%
+      \includegraphics[width=\linewidth,height=0.62\textheight,keepaspectratio]{assets/ym2612_envelope.png}%
+    }{}\\[0.5mm]
+    {\scriptsize\color{kasserMuted} OPN envelope (AR$\rightarrow$DR$\rightarrow$SR$\rightarrow$RR); same family as YM2612.}
+  \end{columns}
+\end{frame}
+
+%---------------------------------------------------------------------
+\begin{frame}{SSG-EG, FB / ALG, L/R, AMS / PMS}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.50\textwidth}
+    \textbf{SSG-EG}\\
+    {\small Legacy envelope shapes (repeating / alternate). On YM2612 game patches it is rarely the star --- know it exists.}\\[2mm]
+    \textbf{FB + ALG (FL + CON)}\\
+    {\small \textbf{ALG} $=$ wiring (carriers vs modulators).
+    \textbf{FB} feeds op.~1 into itself --- grit and cut.}\\[1mm]
+    \wavbtn{FB}{videos/presets/demo_feedback.aiff}{max feedback}{demo_fb2}
+    \column{0.48\textwidth}
+    \textbf{L / R}\\
+    {\small Stereo enable for the channel.}\\[2mm]
+    \textbf{AMS / PMS} + LFO\\
+    {\small LFO speed; \textbf{AMS} $=$ amplitude depth; \textbf{PMS} $=$ pitch depth.
+    Per-op \textbf{AM} bit opts into AMS --- tremolo without new FM sidebands.}\\[1mm]
+    \wavbtn{AM}{videos/presets/demo_am_lfo.aiff}{AMS tremolo}{demo_am2}
+  \end{columns}
+\end{frame}
+
+%---------------------------------------------------------------------
+\begin{frame}{VGM is not a recording --- it is the chip's command stream}
+  {\small A \textbf{VGM} file logs, sample-accurately, the \textbf{register writes} the game sent to the sound hardware --- not a rendered WAV.}
+  \vspace{1mm}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.54\textwidth}
+    \begin{itemize}
+      \item Replay $=$ hear the music as the chip was programmed mid-song
+      \item For Genesis: YM2612 ports (e.g.\ commands \texttt{0x52}/\texttt{0x53})
+      \item Format born on \textbf{SMS Power!} (Maxim); expanded across chips on \textbf{VGMrips}
+      \item \textbf{Project2612}: quality-controlled Genesis / Mega Drive archive
+    \end{itemize}
+    \vspace{1mm}
+    {\scriptsize\color{kasserMuted}
+    Spec, players, and tools are living community infrastructure --- not a one-off dump.}\\[0.5mm]
+    \column{0.44\textwidth}
+    \centering
+    \IfFileExists{assets/vgm-file-example.png}{%
+      \includegraphics[width=0.95\linewidth,height=0.42\textheight,keepaspectratio]{assets/vgm-file-example.png}%
+    }{}\\[0.5mm]
+    {\scriptsize\color{kasserMuted} Header clocks many chips (YM2612 among them).}
+  \end{columns}
+\end{frame}
+
+%---------------------------------------------------------------------
+\begin{frame}{Community pipeline --- log, clean, then extract}
+  {\small Three layers of unpaid craft sit between a cartridge and an OPM bank.}
   \vspace{1mm}
   {\scriptsize
-  \begin{tabular}{@{}clll@{}}
+  \begin{tabular}{@{}p{0.18\linewidth}p{0.38\linewidth}p{0.38\linewidth}@{}}
   \toprule
-  \textbf{\#} & \textbf{Game} & \textbf{Hear in the music} & \textbf{Then isolate a preset} \\
+  \textbf{Stage} & \textbf{What happens} & \textbf{Heroes / tools} \\
   \midrule
-  L1 & \textit{Streets of Rage} & Koshiro's club energy & high-feedback lead / bass \\
-  L2 & \textit{Pulseman} & one-topology brand & Alg.~5 bright patch \\
-  L3 & \textit{Nightmare Circus} & GEMS-era US title & tool-shaped voice \\
-  L4 & \textit{Thunder Force IV} & dense shoot-'em-up FM & varied CON neighbour \\
+  \textbf{1.~Log}
+    & Emulator records every sound-chip write while the game runs
+    & \textbf{BlastEm} (Mike Pavone; today's Genesis logger); historically \textbf{Kega Fusion}. Format: \textbf{Dave} + \textbf{Maxim} (SMS Power!, 2001) \\
+  \textbf{2.~Clean}
+    & Trim loops, find loop points, tag GD3, optimise / compress
+    & \textbf{Valley Bell}'s \texttt{vgmtools}: \texttt{vgm\_trim}, \texttt{vgmlpfnd}, \texttt{vgm\_tag}, \texttt{optvgm} (Blargg$\rightarrow$VB), \texttt{vgm\_cmp}. Countless rippers + \textbf{Project2612} (Dark Pulse, DJ Squarewave, DukeNukem) \\
+  \textbf{3.~Extract}
+    & Lift FM channel configs out of the command stream
+    & \textbf{Shiru} \texttt{vgm2opm} $\rightarrow$ OPM (what DrWashington batch-ran). Later: \textbf{NeoLogiX} \texttt{vgm2pre} (TFI/VGI/\ldots) \\
   \bottomrule
   \end{tabular}
   }
   \vspace{2mm}
+  {\scriptsize\color{kasserMuted}
+  Without these people there is no corpus --- only ROMs.}
+\end{frame}
+
+%---------------------------------------------------------------------
+\begin{frame}{Registers $\Rightarrow$ the composers' FM presets}
+  {\small Because the log contains the same memory the chip used, the \textbf{voice recipes} are inside the stream --- ALG, FB, TL, envelopes, MUL\ldots}
+  \vspace{1mm}
   \begin{columns}[T,onlytextwidth]
-    \column{0.48\textwidth}
-    \begin{block}{VGM (offline)}
-      {\small Foobar2000 + in\_vgm, or VGMPlay --- files from VGMrips, cached on the laptop.}
-    \end{block}
-    \column{0.48\textwidth}
-    \begin{block}{Preset (live)}
-      {\small DAFMExplorer filter by game $\rightarrow$ click $\rightarrow$ play YM2612.\\
-      {\scriptsize\url{https://dafm-explorer.vercel.app/}}}
-    \end{block}
+    \column{0.52\textwidth}
+    \begin{enumerate}
+      \item Game music runs $\rightarrow$ CPU writes YM2612 registers
+      \item Emulator logs those writes as \textbf{VGM} (stage~1)
+      \item Community trims / tags / optimises (stage~2)
+      \item \textbf{vgm2opm} (Shiru) dumps channel voices to \textbf{OPM} (stage~3)
+    \end{enumerate}
+    \column{0.46\textwidth}
+    \centering
+    \IfFileExists{assets/opm-file-example.png}{%
+      \includegraphics[width=0.98\linewidth,height=0.52\textheight,keepaspectratio]{assets/opm-file-example.png}%
+    }{}\\[0.5mm]
+    {\scriptsize\color{kasserMuted} OPM $=$ portable voice dump (VOPM / our analysis).}
+  \end{columns}
+\end{frame}
+
+%---------------------------------------------------------------------
+\begin{frame}{The underexplored archive --- DrWashington's dump}
+  {\small\color{kasserCyan} KVR Audio, Feb~2010 --- \url{https://www.kvraudio.com/forum/viewtopic.php?t=277864}}
+  \vspace{1mm}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.62\textwidth}
+    {\small\textbf{DrWashington} sat on top of that pipeline: he ran \textbf{all of Project2612} through Shiru's \textbf{vgm2opm} and posted the banks for VOPM (plus SysEx for FM8):}
+    \begin{quote}
+      {\footnotesize\textit{``I just converted pretty much every Sega Genesis game ever into .opm files \ldots There are literally thousands of useful FM sounds \ldots from mostly Japanese FM wizards in the early '90s.''}}
+    \end{quote}
+    \begin{itemize}
+      \item Seed of our \textbf{93{,}000+} voice corpus --- the source dataset for this study
+    \end{itemize}
+    \column{0.36\textwidth}
+    \centering
+    \IfFileExists{assets/project2612-logo.png}{%
+      \includegraphics[width=0.95\linewidth,height=0.22\textheight,keepaspectratio]{assets/project2612-logo.png}%
+    }{}\\[2mm]
+    \IfFileExists{assets/vgmrips-website.png}{%
+      \includegraphics[width=0.98\linewidth,height=0.28\textheight,keepaspectratio]{assets/vgmrips-website.png}%
+    }{}
   \end{columns}
 \end{frame}
 
 %---------------------------------------------------------------------
 \begin{frame}{Data extraction --- Making the archive speak}
   Turning raw OPM into an analysis-ready corpus:
-  \begin{enumerate}
-    \item Parse presets (channel + 4 operators $\approx$ 58 parameters)
-    \item Deduplicate by timbre (ignore \textbf{TL} volume variants --- same voice, different mix level)
-    \item Normalise game names (regional titles, aliases)
-    \item Enrich: composer, nationality, \textbf{GEMS} usage (Sega Retro, VGMrips, Wikipedia)
-  \end{enumerate}
-  \videobox{1}{From OPM file $\rightarrow$ a named preset with game, composer, and tool metadata}
-\end{frame}
-
-%---------------------------------------------------------------------
-\begin{frame}{Why TL breaks naive counting}
-  \begin{columns}[c,onlytextwidth]
-    \column{0.58\textwidth}
-    \IfFileExists{assets/fig_tl_dedup.png}{%
-      \includegraphics[width=\linewidth]{assets/fig_tl_dedup.png}%
-    }{}
-    \column{0.40\textwidth}
-    Games reuse the same patch at different mix levels.
-    \begin{itemize}
-      \item \textbf{TL} = loudness in the arrangement, not a new timbre
-      \item Counting every row would invent thousands of ``fake'' instruments
-      \item Dedup on non-TL parameters keeps the creative decision once
-    \end{itemize}
-  \end{columns}
-\end{frame}
-
-%---------------------------------------------------------------------
-\begin{frame}{What an FM preset is}
+  \vspace{0.5mm}
   \begin{columns}[T,onlytextwidth]
-    \column{0.52\textwidth}
-    \textbf{Channel}
-    \begin{itemize}
-      \item \textbf{CON} --- algorithm (how operators connect)
-      \item \textbf{FL} --- feedback on operator~1
-      \item Pan, LFO, \ldots
-    \end{itemize}
-    \vspace{2mm}
-    \textbf{Four operators} (M1, C1, M2, C2)
-    \begin{itemize}
-      \item Envelopes (AR, D1R, D2R, RR, \ldots)
-      \item \textbf{TL} --- level / mix
-      \item \textbf{MUL} --- frequency ratio
-    \end{itemize}
-    \column{0.45\textwidth}
-    \IfFileExists{assets/opm-file-example.png}{%
-      \includegraphics[width=\linewidth,height=0.55\textheight,keepaspectratio]{assets/opm-file-example.png}%
-    }{}
+    \column{0.48\textwidth}
+    \begin{enumerate}
+      \item Parse presets (channel + 4 operators $\approx$ 58 parameters)
+      \item Deduplicate by timbre (ignore \textbf{TL} volume variants)
+      \item Normalise game names (regions, aliases)
+      \item Enrich: composer, nationality, \textbf{GEMS}
+    \end{enumerate}
+    \column{0.50\textwidth}
+    \begin{block}{OPM file structure}
+      {\ttfamily\scriptsize
+      @:0 Preset Name\\
+      LFO: 0 0 0 0 0\\
+      CH: 0 0 0 0 0 0 0\\
+      M1: 31 0 0 0 0 0 0 0 0 0 0\\
+      C1: 31 0 0 0 0 0 0 0 0 0 0\\
+      M2: 31 0 0 0 0 0 0 0 0 0 0\\
+      C2: 31 0 0 0 0 0 0 0 0 0 0%
+      }\\[1mm]
+      {\scriptsize\color{kasserMuted}
+      One voice $=$ name + LFO + channel (\textbf{CH}) + four ops (\textbf{M1}, \textbf{C1}, \textbf{M2}, \textbf{C2}).}
+    \end{block}
   \end{columns}
-  \vspace{1mm}
-  {\small Carriers you hear; modulators shape their spectrum. Each preset = a creative solution under chip constraints.}
 \end{frame}
 
 %---------------------------------------------------------------------
-\begin{frame}{Algorithms as wiring diagrams}
-  \begin{center}
-    \IfFileExists{assets/fig_algorithms_schematic.png}{%
-      \includegraphics[width=0.98\linewidth,height=0.58\textheight,keepaspectratio]{assets/fig_algorithms_schematic.png}%
-    }{}
-  \end{center}
+\begin{frame}{Enrichment --- where the context comes from}
+  {\small OPM gives chip parameters. Context (who, which tool, which region) comes from public sources we join in.}
   \vspace{1mm}
-  {\small Same four operators; different \textbf{CON} = different instrument architecture. Gold $\approx$ carriers, cyan $\approx$ modulators.}
+  {\scriptsize
+  \begin{tabular}{@{}p{0.22\linewidth}p{0.34\linewidth}p{0.38\linewidth}@{}}
+  \toprule
+  \textbf{Field} & \textbf{Source} & \textbf{What we take} \\
+  \midrule
+  \textbf{GEMS?}
+    & \textbf{Sega Retro} (\texttt{segaretro.org/GEMS})
+    & Registry of titles that used Sega of America's GEMS driver \\
+  \textbf{Composer(s)}
+    & \textbf{VGMrips} game pages / packs
+    & Game$\leftrightarrow$composer mappings (often several per title) \\
+  \textbf{Nationality / bio}
+    & \textbf{Wikipedia} (composer pages)
+    & Country / background when a page exists; gaps remain \\
+  \textbf{Game identity}
+    & VGMrips + aliases / regional titles
+    & Normalised names so packs match across sources \\
+  \bottomrule
+  \end{tabular}
+  }
+  \vspace{1.5mm}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.48\textwidth}
+    \centering
+    \IfFileExists{assets/segaretro-gems-page.png}{%
+      \includegraphics[width=\linewidth,height=0.28\textheight,keepaspectratio]{assets/segaretro-gems-page.png}%
+    }{}\\[0.5mm]
+    {\scriptsize\color{kasserMuted} Sega Retro --- GEMS list}
+    \column{0.48\textwidth}
+    \centering
+    \IfFileExists{assets/vgmrips-website.png}{%
+      \includegraphics[width=\linewidth,height=0.28\textheight,keepaspectratio]{assets/vgmrips-website.png}%
+    }{}\\[0.5mm]
+    {\scriptsize\color{kasserMuted} VGMrips --- games \& credits}
+  \end{columns}
 \end{frame}
 
 %---------------------------------------------------------------------
-\begin{frame}{EDA: Algorithm 4 as the workhorse}
+\begin{frame}{Data Analysis: Algorithm 4 as the workhorse}
   \begin{columns}[c,onlytextwidth]
     \column{0.52\textwidth}
     \IfFileExists{assets/fig_con_distribution.png}{%
@@ -356,80 +568,250 @@
     }
     \column{0.45\textwidth}
     \begin{itemize}
-      \item \textbf{Algorithm 4} dominates corpus-wide: two FM voices summed --- flexible and mix-friendly
-      \item Some scores commit hard to one topology
-      \item Others spread routing across several algorithms
+      \item \textbf{Algorithm 4} is the corpus default: two modulated carriers summed --- two FM voices in one channel
+      \item Composer-friendly: wide palette, easy to balance in a busy mix
+      \item Other strong CONs also make musical sense (next)
     \end{itemize}
-    \vspace{2mm}
+    \vspace{1.5mm}
     {\small A shared ``YM2612 grammar'' --- with room for fingerprints.}
   \end{columns}
 \end{frame}
 
 %---------------------------------------------------------------------
-\begin{frame}{Game fingerprints --- commit vs variety}
-  \begin{columns}[c,onlytextwidth]
-    \column{0.55\textwidth}
-    \IfFileExists{assets/fig_fingerprint_games.png}{%
-      \includegraphics[width=\linewidth,height=0.48\textheight,keepaspectratio]{assets/fig_fingerprint_games.png}%
-    }{}
-    \column{0.42\textwidth}
-    \begin{itemize}
-      \item \textbf{Pulseman}: one algorithm dominates (Alg.~5) --- brand by commitment
-      \item \textbf{Thunder Force~IV}: spreads across CONs --- identity from variety
-    \end{itemize}
-    {\scriptsize Same chip, different house styles of sound design.}
-  \end{columns}
-  \livebox{L2}{\textit{Pulseman} VGM $\rightarrow$ Alg.~5 preset in DAFMExplorer}
-\end{frame}
-
-%---------------------------------------------------------------------
-\begin{frame}{EDA: Feedback as a binary aesthetic}
-  \begin{columns}[c,onlytextwidth]
-    \column{0.48\textwidth}
-    \IfFileExists{assets/fig_fl_distribution.png}{%
-      \includegraphics[width=\linewidth,height=0.42\textheight,keepaspectratio]{assets/fig_fl_distribution.png}%
-    }{}
-    \column{0.50\textwidth}
-    Almost no middle ground: \textbf{FL = 0} or \textbf{FL = 7}.
-    \begin{itemize}
-      \item Max feedback: grit, cut, presence
-      \item No feedback: clean, controllable
-    \end{itemize}
-    {\scriptsize A stylistic switch, not a gentle trim.}
-  \end{columns}
-  \videobox{2}{Hear FL~0 vs FL~7 (or two extreme presets)}
-\end{frame}
-
-%---------------------------------------------------------------------
-\begin{frame}{EDA: A brightness sweet spot}
+\begin{frame}{Data Analysis: CON insights --- wirings \& musical reading}
   \begin{columns}[T,onlytextwidth]
-    \column{0.33\textwidth}
-    \IfFileExists{assets/fig_brightness_hist.png}{%
-      \includegraphics[width=\linewidth]{assets/fig_brightness_hist.png}%
+    \column{0.52\textwidth}
+    \centering
+    \IfFileExists{assets/fig_algorithms_schematic.png}{%
+      \includegraphics[width=\linewidth,height=0.58\textheight,keepaspectratio]{assets/fig_algorithms_schematic.png}%
+    }{}\\[0.5mm]
+    {\scriptsize\color{kasserMuted} Gold $\approx$ carriers, cyan $\approx$ modulators.}
+    \column{0.46\textwidth}
+    {\scriptsize
+    \begin{itemize}
+      \item \textbf{CON~4} --- two FM voices summed: bright + body, mix-friendly default
+      \item \textbf{CON~5} --- one mod $\rightarrow$ many carriers: bright, dense, multi-component
+      \item \textbf{CON~2} --- stacked / intertwined: richer, less stable spectra
+      \item \textbf{CON~0} --- full serial ($1{\rightarrow}2{\rightarrow}3{\rightarrow}4$): metallic edge; powerful, harder to control
+    \end{itemize}
+    }
+  \end{columns}
+\end{frame}
+
+%---------------------------------------------------------------------
+\begin{frame}{Data Analysis: Feedback as a binary aesthetic}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.54\textwidth}
+    \centering
+    \IfFileExists{assets/fig_feedback_schematic.png}{%
+      \includegraphics[width=\linewidth,height=0.48\textheight,keepaspectratio]{assets/fig_feedback_schematic.png}%
+    }{}\\[0.5mm]
+    {\scriptsize\color{kasserMuted} Same idea as the CON wirings: Op~1 loop $=$ FL.}
+    \column{0.44\textwidth}
+    {\small Almost no middle ground: \textbf{FL = 0} or \textbf{FL = 7}.}\\[1mm]
+    {\scriptsize
+    \begin{itemize}
+      \item \textbf{FL = 7}: Op~1 becomes a harmonic / noise generator --- grit, metallic cut for leads, basses, attacks
+      \item \textbf{FL = 0}: stable sine-like op --- clean carrier or precise modulator
+      \item A \textbf{stylistic commitment} between two worlds, not a gentle trim
+    \end{itemize}
+    }
+    \vspace{1mm}
+    \IfFileExists{assets/fig_fl_distribution.png}{%
+      \includegraphics[width=\linewidth,height=0.28\textheight,keepaspectratio]{assets/fig_fl_distribution.png}%
     }{}
-    \column{0.33\textwidth}
-    \IfFileExists{assets/fig_brightness_by_game.png}{%
-      \includegraphics[width=\linewidth]{assets/fig_brightness_by_game.png}%
+  \end{columns}
+\end{frame}
+
+%---------------------------------------------------------------------
+\begin{frame}{Data Analysis: Each CON is its own preset line --- FL first}
+  {\small Changing \textbf{CON} rewires the instrument: each algorithm is a different preset family.\\
+  First lens: how \textbf{feedback (FL)} is used \emph{inside} each CON.}
+  \vspace{0.5mm}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.54\textwidth}
+    \centering
+    \IfFileExists{assets/fig_con_fl.png}{%
+      \includegraphics[width=\linewidth,height=0.58\textheight,keepaspectratio]{assets/fig_con_fl.png}%
     }{}
-    \column{0.33\textwidth}
-    \IfFileExists{assets/fig_brightness_dark_games.png}{%
-      \includegraphics[width=\linewidth]{assets/fig_brightness_dark_games.png}%
-    }{}
+    \column{0.44\textwidth}
+    {\scriptsize
+    \begin{itemize}
+      \item \textbf{CON~7} (four parallel carriers): \textbf{FL = 0} dominates; FL~1--7 stay low and flat --- four clean sines; self-modulation rarely wanted
+      \item \textbf{CON~0} (serial stack): strong \textbf{FL = 7} \emph{and} a tall \textbf{FL = 0} --- already heavy op$\rightarrow$op modulation; Op~1 feedback is optional grit, not required
+      \item \textbf{CON~6} (one stack + three carriers): same bipolar habit --- with FL$\approx$0 it can feel close to CON~7's additive world
+      \item Most other CONs: classic corpus pattern --- \textbf{FL = 7} as the loud default
+    \end{itemize}
+    }
+  \end{columns}
+\end{frame}
+
+%---------------------------------------------------------------------
+\begin{frame}{Data Analysis: Feature engineering --- Brightness \& Complexity}
+  {\small Fifty-eight chip params are hard to narrate. We add two derived scores (0--1) to simplify comparisons across presets, games, and composers.}
+  \vspace{1.5mm}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.48\textwidth}
+    \begin{block}{Brightness\_Index}
+      {\scriptsize Combines (normalized):
+      \begin{itemize}
+        \item \textbf{TL} (40\%) --- louder ops $\Rightarrow$ brighter (TL inverted)
+        \item \textbf{AR} (30\%) --- faster attacks
+        \item \textbf{MUL} (30\%) --- higher harmonics
+      \end{itemize}
+      Averaged across the four operators.}
+    \end{block}
+    \column{0.48\textwidth}
+    \begin{block}{Complexity\_Score}
+      {\scriptsize Combines (normalized):
+      \begin{itemize}
+        \item \textbf{CON} (40\%) --- algorithm index / routing
+        \item \textbf{Active ops} (40\%) --- ops with TL~$<$~127
+        \item \textbf{FL} (20\%) --- feedback adds grit / motion
+      \end{itemize}
+      Proxy for internal FM motion, not audio ``CPU cost.''}
+    \end{block}
   \end{columns}
   \vspace{2mm}
-  {\small Brightness from TL, attack, and multipliers --- presence on small TVs. Mid--high is the norm; a few titles stay deliberately darker.}
+  {\scriptsize\color{kasserMuted}
+  Used later for game / composer / nationality summaries and the embedding coloured maps.}
 \end{frame}
 
 %---------------------------------------------------------------------
-\begin{frame}{GEMS --- the American sound driver}
+\begin{frame}{Data Analysis: Brightness \& Complexity --- corpus insights}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.46\textwidth}
+    \centering
+    \IfFileExists{assets/fig_brightness_hist.png}{%
+      \includegraphics[width=\linewidth,height=0.48\textheight,keepaspectratio]{assets/fig_brightness_hist.png}%
+    }{}
+    \column{0.52\textwidth}
+    {\scriptsize
+    \textbf{Brightness\_Index} clusters mid--high ($\approx$0.55--0.7):
+    \begin{itemize}
+      \item Rarely dark by default --- clarity for small TVs / dense mixes
+      \item Not maxed at 1.0 --- a \textbf{controlled sweet spot}, not pure harshness
+    \end{itemize}
+    \vspace{1.5mm}
+    \textbf{Complexity\_Score} sits upper--mid ($\approx$0.6--0.85):
+    \begin{itemize}
+      \item Multiple active ops + moderate routing --- rich internal motion
+      \item Very simple ``almost sine'' patches are rare
+      \item Absolute max complexity avoided --- depth with predictable playback
+    \end{itemize}
+    }
+  \end{columns}
+\end{frame}
+
+%---------------------------------------------------------------------
+\begin{frame}{Data Analysis: Game fingerprints --- commit vs variety}
+  {\small Shared YM2612 grammar --- but each score builds a recognizable \textbf{algorithm fingerprint}.}
+  \vspace{0.5mm}
   \begin{columns}[T,onlytextwidth]
     \column{0.48\textwidth}
-    \textbf{GEMS} (Genesis Editor for Music and Sound): Sega of America's official tool (mid-1990s).
+    \centering
+    \IfFileExists{assets/fig_fingerprint_games.png}{%
+      \includegraphics[width=\linewidth,height=0.42\textheight,keepaspectratio]{assets/fig_fingerprint_games.png}%
+    }{}
+    \column{0.50\textwidth}
+    {\scriptsize
     \begin{itemize}
-      \item Lowered the barrier to YM2612 programming
-      \item Controversial: templates vs craft?
-      \item In our corpus: a \textbf{tool variable}, not just a style label
+      \item \textbf{Pulseman}: Alg.~5 dominates ($\approx$75\%) --- brand by \emph{commitment} (techno bite)
+      \item \textbf{Gunstar Heroes}, \textbf{Streets of Rage~3}, \textbf{Thunder Force~IV}: spread across CONs --- identity from \emph{variety} / deliberate routing per patch
+      \item Alg.~4 still rises often --- the dependable default --- but house style is how you leave (or stay in) it
     \end{itemize}
+    }
+  \end{columns}
+  \vspace{1mm}
+  \begin{center}
+    {\scriptsize\color{kasserGold}\textbf{Hear the fingerprint} (same MIDI note --- real game presets)}\\[1mm]
+    \wavbtn{PM}{videos/presets/game_pulseman_con5_b0p894.aiff}{Pulseman Alg.5}{gpm}%
+    \quad
+    \wavbtn{TF4}{videos/presets/game_thunder_force_iv_con0_b0p67.aiff}{TF~IV Alg.0}{gtf4}%
+    \quad
+    \wavbtn{GH}{videos/presets/game_gunstar_heroes_con5_b0p634.aiff}{Gunstar Alg.5}{ggh}%
+    \quad
+    \wavbtn{SoR3}{videos/presets/game_streets_of_rage_3_con2_b0p579.aiff}{SoR3 Alg.2}{gsor3}%
+  \end{center}
+\end{frame}
+
+%---------------------------------------------------------------------
+\begin{frame}{Data Analysis: Brightness by game --- a shared sweet spot}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.46\textwidth}
+    \centering
+    \IfFileExists{assets/fig_brightness_by_game.png}{%
+      \includegraphics[width=\linewidth,height=0.48\textheight,keepaspectratio]{assets/fig_brightness_by_game.png}%
+    }{}
+    \column{0.52\textwidth}
+    {\scriptsize
+    Top titles cluster mid--high --- enough bite for small TVs / dense mixes, not so bright it fatigues.\\[1.5mm]
+    \begin{itemize}
+      \item \textbf{Bright end}: \textit{The Adventures of Batman and Robin}, \textit{Pulseman} --- sharp, punchy energy
+      \item \textbf{Rounder}: \textit{Ristar}, \textit{Sonic~3~\&~Knuckles} --- still clear, more melodic body
+      \item Nobody in this top set lives in the ``dark'' zone --- a practical Genesis default
+    \end{itemize}
+    }
+  \end{columns}
+  \vspace{1mm}
+  \begin{center}
+    {\scriptsize\color{kasserGold}\textbf{Bright vs rounder} (same note)}\\[1mm]
+    \wavbtn{BaR}{videos/presets/game_batman_and_robin_con0_b0p903.aiff}{Batman high~B}{gbar}%
+    \quad
+    \wavbtn{PM}{videos/presets/game_pulseman_con5_b0p894.aiff}{Pulseman high~B}{gpm2}%
+    \quad
+    \wavbtn{Rst}{videos/presets/game_ristar_con3_b0p616.aiff}{Ristar}{grst}%
+    \quad
+    \wavbtn{S3K}{videos/presets/game_sonic_3_and_knuckles_con5_b0p622.aiff}{Sonic~3\&K}{gs3k}%
+  \end{center}
+\end{frame}
+
+%---------------------------------------------------------------------
+\begin{frame}{Data Analysis: Dark outliers --- choosing warmth over bite}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.46\textwidth}
+    \centering
+    \IfFileExists{assets/fig_brightness_dark_games.png}{%
+      \includegraphics[width=\linewidth,height=0.48\textheight,keepaspectratio]{assets/fig_brightness_dark_games.png}%
+    }{}
+    \column{0.52\textwidth}
+    {\scriptsize
+    A small cluster deliberately sits at the \textbf{low} Brightness\_Index --- breaking the Genesis ``cut through the TV'' habit.\\[1.5mm]
+    \begin{itemize}
+      \item Chart extremes: \textit{Spider-Man~\&~X-Men}, \textit{Tinhead}, \textit{The Tick}, \textit{Thunder Pro Wrestling}\ldots
+      \item Warmth / weight / atmosphere over immediacy --- often racing, sports, comedy pacing
+      \item Likely lower TL, slower AR, fewer high MULs --- room for groove, bass, PCM drums
+    \end{itemize}
+    {\scriptsize\color{kasserMuted} High brightness was the default; rejecting it was a mood / genre choice.}
+    }
+  \end{columns}
+  \vspace{1mm}
+  \begin{center}
+    {\scriptsize\color{kasserGold}\textbf{Hear the dark side} (same note --- contrast with BaR/PM)}\\[1mm]
+    \wavbtn{SMX}{videos/presets/game_spider_man_and_x_men_con5_b0p3.aiff}{Spider-Man}{gsmx}%
+    \quad
+    \wavbtn{Tick}{videos/presets/game_the_tick_con2_b0p444.aiff}{The Tick}{gtick}%
+    \quad
+    \wavbtn{Tin}{videos/presets/game_tinhead_con4_b0p391.aiff}{Tinhead}{gtin}%
+    \quad
+    \wavbtn{TG2}{videos/presets/game_top_gear_2_con0_b0p514.aiff}{Top Gear~2}{gtg2}%
+  \end{center}
+\end{frame}
+
+%---------------------------------------------------------------------
+\begin{frame}{Data Analysis: GEMS --- the American sound driver}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.50\textwidth}
+    {\small \textbf{GEMS} (Genesis Editor for Music and Sound): Sega of America's mid-1990s music tool.}\\[1.5mm]
+    {\scriptsize
+    In our corpus it is a minority --- but not a footnote:
+    \begin{itemize}
+      \item Only \textbf{7.3\%} of presets (\textbf{43} / 547 games) --- yet \textbf{1{,}600+} patches to study
+      \item Big GEMS libraries: \textit{Nightmare Circus}, \textit{Marsupilami}, \textit{Shadowrun}, \textit{Chakan}
+      \item Slightly \emph{fewer} presets per game than non-GEMS --- structured consistency over volume
+    \end{itemize}
+    {\color{kasserMuted} Tool variable / industrial conditions --- not a moral category.}
+    }
     \column{0.48\textwidth}
     \IfFileExists{assets/gems-interface.png}{%
       \includegraphics[width=\linewidth,height=0.55\textheight,keepaspectratio]{assets/gems-interface.png}%
@@ -438,114 +820,210 @@
 \end{frame}
 
 %---------------------------------------------------------------------
-\begin{frame}{GEMS in practice --- a concrete contrast}
-  \begin{columns}[c,onlytextwidth]
-    \column{0.55\textwidth}
+\begin{frame}{Data Analysis: GEMS --- a different FM grammar}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.48\textwidth}
+    \centering
     \IfFileExists{assets/fig_gems_case.png}{%
-      \includegraphics[width=\linewidth,height=0.48\textheight,keepaspectratio]{assets/fig_gems_case.png}%
+      \includegraphics[width=\linewidth,height=0.42\textheight,keepaspectratio]{assets/fig_gems_case.png}%
     }{}
-    \column{0.42\textwidth}
+    \column{0.50\textwidth}
+    {\scriptsize
+    Synthesis contrast (GEMS vs the wider Genesis corpus):
     \begin{itemize}
-      \item \textbf{Nightmare Circus} (GEMS): shared tool ecosystem
-      \item \textbf{Thunder Force~IV} (non-GEMS): broader CON spread
+      \item Modal algorithm: \textbf{GEMS $\rightarrow$ Alg.~2}; ecosystem default \textbf{Alg.~4}
+      \item Feedback: \textbf{GEMS $\rightarrow$ FL~$=$~0}; non-GEMS almost always \textbf{FL~$=$~7}
+      \item Brightness / complexity only slightly lower --- not ``duller,'' but \textbf{more controlled}
     \end{itemize}
-    {\scriptsize Not worse vs better --- different industrial conditions.}
+    {\color{kasserMuted} Stability and multi-track reliability over feedback-driven grit.}
+    }
   \end{columns}
-  \livebox{L3+L4}{\textit{Nightmare Circus} vs \textit{Thunder Force IV}: VGM + preset each}
+  \vspace{1.5mm}
+  \begin{center}
+    {\scriptsize\color{kasserGold}\textbf{Hear the tool gap} (same MIDI note)}\\[1mm]
+    \wavbtn{NC}{videos/presets/game_nightmare_circus_con2_fl0.aiff}{Nightmare Circus GEMS}{gnc}%
+    \quad
+    \wavbtn{TF4}{videos/presets/game_thunder_force_iv_con0_b0p67.aiff}{TF~IV non-GEMS}{gtf4g}%
+  \end{center}
 \end{frame}
 
 %---------------------------------------------------------------------
-\begin{frame}{Composing by region / tool}
-  \begin{columns}[c,onlytextwidth]
+\begin{frame}{Data Analysis: Composer signatures --- legends}
+  {\scriptsize
+  Why composers matter: same chip, different \emph{sonic signatures} --- technical habits that make a voice recognisable.\\[1.5mm]
+  \begin{columns}[T,onlytextwidth]
     \column{0.48\textwidth}
-    \IfFileExists{assets/fig_nationality.png}{%
-      \includegraphics[width=\linewidth]{assets/fig_nationality.png}%
-    }{}
+    \begin{itemize}
+      \item \textbf{Yuzo Koshiro} (*Streets of Rage*): house / techno into FM; programmed on hardware --- high control, aggressive presence
+      \item \textbf{Masato Nakamura} (*Sonic*): J-pop craft on chip limits --- catchy beds that survive hundreds of loops
+    \end{itemize}
     \column{0.48\textwidth}
-    \IfFileExists{assets/fig_gems_brightness.png}{%
-      \includegraphics[width=\linewidth]{assets/fig_gems_brightness.png}%
-    }{}
+    \begin{itemize}
+      \item \textbf{Hiroshi Kawaguchi} (*Golden Axe*, \textit{OutRun}): arcade clarity --- balance and envelopes that cut through noise
+      \item \textbf{Norio Hanzawa} (*Gunstar Heroes*): Treasure experimentation --- layered routing, unusual topologies
+    \end{itemize}
   \end{columns}
-  \vspace{2mm}
-  Japan / USA / UK as \textbf{hypotheses} about practice --- drivers, deadlines, and shared templates shape timbre as much as ``national style.''
+  \vspace{1.5mm}
+  {\color{kasserMuted} Proxy in the dump: credited games as composer neighbourhoods (metadata gaps remain).}
+  }
 \end{frame}
 
 %---------------------------------------------------------------------
-\begin{frame}{Composer signatures}
+\begin{frame}{Data Analysis: Composer signatures --- shared FM grammar}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.46\textwidth}
+    \IfFileExists{assets/fig_composers_brightness.png}{%
+      \includegraphics[width=\linewidth,height=0.48\textheight,keepaspectratio]{assets/fig_composers_brightness.png}%
+    }{}
+    \column{0.52\textwidth}
+    {\scriptsize
+    Top composers converge on the same practical toolbox:
+    \begin{itemize}
+      \item Modal algorithm: almost everyone $\rightarrow$ \textbf{Alg.~4} (two-voice workhorse)
+      \item Modal feedback: virtually all $\rightarrow$ \textbf{FL~$=$~7} (default grit, not a special FX)
+      \item Brightness means cluster $\approx$ \textbf{0.55--0.7} --- TV speakers + dense mixes
+      \item Complexity means $\approx$ \textbf{0.65--0.8} --- controlled richness, not chaos
+    \end{itemize}
+    {\color{kasserMuted} Style shows up in envelopes and game palettes --- not in rejecting the chip defaults.}
+    }
+  \end{columns}
+\end{frame}
+
+%---------------------------------------------------------------------
+\begin{frame}{Data Analysis: Composer signatures --- hear four voices}
+  {\scriptsize Same MIDI note --- game-proxied presets from each neighbourhood.\\[1mm]}
+  \begin{center}
+    {\scriptsize\color{kasserGold}\textbf{Click to hear}}\\[1.5mm]
+    \wavbtn{YK}{videos/presets/composer_koshiro_con4_fl7_b0p747.aiff}{Koshiro SoR Alg.4 FL7}{cyk}%
+    \quad
+    \wavbtn{MN}{videos/presets/composer_nakamura_con4_fl7_b0p562.aiff}{Nakamura Sonic Alg.4 FL7}{cmn}\\[1.5mm]
+    \wavbtn{HK}{videos/presets/composer_kawaguchi_con5_fl7_b0p585.aiff}{Kawaguchi Golden Axe}{chk}%
+    \quad
+    \wavbtn{NH}{videos/presets/composer_hanzawa_con5_fl7_b0p626.aiff}{Hanzawa Gunstar}{cnh}\\[2mm]
+  \end{center}
+  {\scriptsize
+  \begin{itemize}
+    \item \textbf{Koshiro}: brighter bite (Moon Beach) --- club energy as a single voice
+    \item \textbf{Nakamura}: Star Light bed --- pop clarity inside the same Alg.~4 / FL~$=$~7 grammar
+    \item \textbf{Kawaguchi} / \textbf{Hanzawa}: Alg.~5 colour --- arcade cut vs layered Treasure texture
+  \end{itemize}
+  }
+\end{frame}
+
+%---------------------------------------------------------------------
+\begin{frame}{Data Analysis: More signatures --- Kodaka \& Uematsu}
   \begin{columns}[T,onlytextwidth]
     \column{0.52\textwidth}
-    \begin{itemize}
-      \item \textbf{Yuzo Koshiro} --- house / techno energy into YM2612 (*Streets of Rage*)
-      \item \textbf{Masato Nakamura} --- pop sensibility (*Sonic the Hedgehog*)
-      \item Shared workhorse choices --- individuality in envelopes, brightness, game fingerprints
-    \end{itemize}
-    \column{0.45\textwidth}
-    \IfFileExists{assets/fig_composers_brightness.png}{%
-      \includegraphics[width=\linewidth,height=0.42\textheight,keepaspectratio]{assets/fig_composers_brightness.png}%
-    }{}
-  \end{columns}
-  \livebox{L1}{\textit{Streets of Rage} VGM $\rightarrow$ high-FL Koshiro preset (VIDEO~3 only if live fails)}
-\end{frame}
-
-%---------------------------------------------------------------------
-\begin{frame}{More signatures --- Kodaka \& Uematsu}
-  \begin{columns}[c,onlytextwidth]
-    \column{0.55\textwidth}
     \IfFileExists{assets/fig_composers_compare.png}{%
-      \includegraphics[width=\linewidth]{assets/fig_composers_compare.png}%
+      \includegraphics[width=\linewidth,height=0.52\textheight,keepaspectratio]{assets/fig_composers_compare.png}%
     }{}
-    \column{0.42\textwidth}
+    \column{0.46\textwidth}
+    {\scriptsize
     \begin{itemize}
-      \item \textbf{Naoki Kodaka}: modal CON leans away from the Alg.~4 default --- more idiosyncratic routing
-      \item \textbf{Nobuo Uematsu}: still near the workhorse grammar, with his own brightness / game palette
+      \item \textbf{Naoki Kodaka}: modal CON leans to \textbf{Alg.~2} --- the clearest routing outlier among top names; darker / more experimental worlds
+      \item \textbf{Nobuo Uematsu}: stays on the Alg.~4 workhorse, with slightly \emph{lusher} complexity --- controlled richness, not a different topology
     \end{itemize}
-    \vspace{2mm}
-    {\small Convergence on tools of the chip $\neq$ identical sonic personalities.}
+    \vspace{1mm}
+    Shared toolbox $\neq$ identical personality.\\[1.5mm]
+    {\color{kasserMuted} Regionally, Japan / USA / UK also share Alg.~4 + FL~$=$~7; nationality barely separates embeddings --- chip constraints dominate.}
+    }
   \end{columns}
+  \vspace{1mm}
+  \begin{center}
+    {\scriptsize\color{kasserGold}\textbf{Hear the Kodaka lean} (Alg.~2, FL~$=$~7 --- Super Fantasy Zone)}\\[1mm]
+    \wavbtn{NK}{videos/presets/composer_kodaka_con2_fl7_b0p553.aiff}{Kodaka Alg.2}{cnk}%
+  \end{center}
 \end{frame}
 
 %---------------------------------------------------------------------
-\begin{frame}{Zooming out --- timbral neighbourhoods}
-  \begin{columns}[c,onlytextwidth]
-    \column{0.55\textwidth}
+\begin{frame}{DAFMExplorer --- three tools, one pipeline}
+  {\scriptsize
+  We never ask the data for genre labels. We only ask: \emph{which presets look alike in chip-parameter space?}
+  \vspace{1.5mm}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.32\textwidth}
+    \textbf{\color{kasserCyan}1. Compress (PCA)}\\[0.8mm]
+    $\sim$58 knobs per preset is a crowded room: many coordinates move together (e.g.\ operator levels).\\[1mm]
+    \textbf{Principal Component Analysis} finds a smaller set of axes that keep most of the variance --- roughly $58{\rightarrow}50$ dimensions --- so later steps see signal, not redundant noise.
+    \column{0.32\textwidth}
+    \textbf{\color{kasserMagenta}2. Group (K-Means)}\\[0.8mm]
+    In that compressed space, \textbf{K-Means} places $K$ centres and assigns each preset to the nearest one.\\[1mm]
+    We sweep $K$ and pick the \textbf{elbow} ($K{=}7$): enough neighbourhoods to be useful, not so many that groups fragment into noise.
+    \column{0.32\textwidth}
+    \textbf{\color{kasserGold}3. Lay out (UMAP)}\\[0.8mm]
+    Humans cannot stare at 50D. \textbf{UMAP} folds the cloud onto a plane while trying to keep \emph{neighbours near neighbours}.\\[1mm]
+    That 2D layout is the clickable map --- visualisation of structure already found, not a second clustering.
+  \end{columns}
+  \vspace{2mm}
+  {\color{kasserMuted}Unsupervised throughout: no composer / game / genre labels in the fit --- only YM2612 parameters. Names come later, by listening.}
+  }
+\end{frame}
+
+%---------------------------------------------------------------------
+\begin{frame}{DAFMExplorer --- sonic realms \& the live map}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.48\textwidth}
     \IfFileExists{assets/fig_embedding_clusters.png}{%
-      \includegraphics[width=\linewidth,height=0.62\textheight,keepaspectratio]{assets/fig_embedding_clusters.png}%
+      \includegraphics[width=\linewidth,height=0.50\textheight,keepaspectratio]{assets/fig_embedding_clusters.png}%
     }{}
-    \column{0.42\textwidth}
-    At full corpus scale, presets form \textbf{neighbourhoods}: similar voices land near each other.
-    \vspace{2mm}
-    Seven emergent ``sonic realms'' (from action neon to fantasy atmospheres) --- a map of practice, not a taxonomy imposed in advance.
-    \vspace{2mm}
-    {\scriptsize\textit{No ML tutorial here --- just the picture of the corpus.}}
+    \column{0.50\textwidth}
+    {\scriptsize
+    Seven emergent groups $\rightarrow$ human ``sonic realm'' names (a reading aid, not a taxonomy we imposed first):
+    \begin{itemize}
+      \item Raw Signals
+      \item Neon Action
+      \item Polished Arcade
+      \item High-Speed Chiptune
+      \item Deep Space FM
+      \item Fantasy Atmospheres
+      \item Experimental Playgrounds
+    \end{itemize}
+    {\color{kasserMuted}Same pipeline feeds nearest-neighbour ``similar presets'' in the app --- still in parameter space.}
+    }
   \end{columns}
-\end{frame}
-
-%---------------------------------------------------------------------
-\begin{frame}{What the data does \emph{not} say}
-  Honest limits keep the story scholarly:
-  \begin{itemize}
-    \item A preset is not a full score --- melodies, sequencing, and PCM drums live elsewhere
-    \item Extraction inherits archive quirks (naming, completeness, scraping gaps)
-    \item Clusters and maps are \textbf{exploratory}: invitations to listen, not closed taxonomies
-    \item ``National style'' and ``GEMS sound'' are hypotheses under industrial constraints
-  \end{itemize}
-  \vspace{2mm}
-  {\small The payoff: better questions about platform practice --- with sounds you can still hear.}
-\end{frame}
-
-%---------------------------------------------------------------------
-\begin{frame}{Why this matters --- and open tools}
-  \begin{itemize}
-    \item Presets are evidence of \textbf{shared timbral practice} on a platform
-    \item Extraction + exploratory analysis make composer, region, and tool differences discussable with data
-    \item Method is open: code, documentation, and notebooks for reuse
-  \end{itemize}
-  \vspace{2mm}
+  \vspace{0.8mm}
   \begin{block}{Listen \& explore}
-    \textbf{DAFMExplorer} --- interactive map, real-time YM2612 playback, filters.\\
-    {\small\url{https://dafm-explorer.vercel.app/}}\\[1mm]
-    {\scriptsize Next: same approach for other FM families (e.g.\ YM2151, YMF262).}
+    {\scriptsize\textbf{DAFMExplorer} --- map, real-time YM2612 playback, filters by realm / game / composer.\\
+    \url{https://dafm-explorer.vercel.app/}}
   \end{block}
+\end{frame}
+
+%---------------------------------------------------------------------
+\begin{frame}{Conclusions --- what the study shows}
+  {\scriptsize
+  \begin{itemize}
+    \item \textbf{Shared YM2612 grammar}: Alg.~4 and FL~$=$~7 dominate as practical defaults across composers and regions
+    \item \textbf{Feature engineering} (Brightness / Complexity) makes corpus-scale comparison discussable without drowning in 58 knobs
+    \item \textbf{Games leave fingerprints}: some commit to one wiring; others keep a multi-algorithm palette
+    \item \textbf{Tools matter}: GEMS leans Alg.~2 + FL~$=$~0 --- industrial conditions, not ``worse FM''
+    \item \textbf{Composer signatures} sit inside the shared toolbox; outliers (e.g.\ Kodaka Alg.~2) are readable in the data
+    \item \textbf{Unsupervised map} organises $\sim$93k presets into listen-able realms --- the scaffold for DAFMExplorer
+  \end{itemize}
+  \vspace{1.5mm}
+  {\small Presets are evidence of \textbf{shared timbral practice} on a platform --- measurable, still audible, openly reusable.}
+  }
+\end{frame}
+
+%---------------------------------------------------------------------
+\begin{frame}{Limits \& future work --- toward sound-based similarity}
+  {\scriptsize
+  \textbf{Limits (honest now):}
+  \begin{itemize}
+    \item A preset $\neq$ a full score (melody, sequencing, PCM drums live elsewhere)
+    \item Archive quirks; maps are exploratory; ``national style'' / ``GEMS sound'' stay hypotheses
+    \item Today's clustering / nearest neighbours use \textbf{parameter space only} --- they do \emph{not} hear the preset
+  \end{itemize}
+  \vspace{1mm}
+  \textbf{Future work (in progress):} render each patch $\rightarrow$ extract \textbf{audio features} $\rightarrow$ recommend by \emph{timbre}, not only by knobs.\\[1mm]
+  Related literature we aim to follow / adapt:
+  \begin{itemize}
+    \item Yee-King et al.\ (2018) --- sound matching / auto-programming of FM (Dexed) from audio
+    \item Cáceres (2007) --- MFCC features + clustering for FM preset lookup
+    \item Le~Vaillant \& Joder (2024) --- timbre-regularised latent spaces over rendered presets
+    \item Sound2Synth (IJCAI 2022) --- estimating FM parameters from target sounds
+  \end{itemize}
+  {\color{kasserGold}Goal:} a creation / imitation / exploration tool that advises presets similar in \textbf{sound}, not just in input parameters.
+  }
 \end{frame}
 
 %---------------------------------------------------------------------
@@ -559,6 +1037,7 @@
     \textbf{Abraham Casas} \& \textbf{Maria Cerro}\\
     Kasser Synths\\[3mm]
     {\small\url{https://www.kassersynths.com}}\\
+    {\small\url{https://www.tindie.com/stores/kassersynths/}}\\
     {\small\url{https://dafm-explorer.vercel.app/}}\\
     {\small\url{https://github.com/kassersynths/DAFMExplorer}}\\[4mm]
     {\large\color{kasserMagenta}Thank you --- Q\&A}

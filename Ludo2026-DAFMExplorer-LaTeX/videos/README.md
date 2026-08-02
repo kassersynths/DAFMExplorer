@@ -30,13 +30,13 @@ Alternative if easier: Algorithm 4 “two-voice” patch vs a denser algorithm �
 
 ## V3 — History you can hear (~60–75 s)
 
-**Slide cue:** *Composer signatures*
+**Slide cue:** *Composer signatures — hear four voices* (PDF inline AIFFs)
 
-**Play 2–3 short presets**, labelled on-screen, e.g.:
+**Play 2–4 short presets** on the slide (same MIDI note), e.g.:
 
-1. Koshiro / *Streets of Rage* (or related title in the set)
-2. Nakamura / *Sonic*
-3. Optional: GEMS vs non-GEMS patch with similar role (bass / lead)
+1. Koshiro / *Streets of Rage* (`composer_koshiro_…`)
+2. Nakamura / *Sonic* Star Light (`composer_nakamura_…`)
+3. Optional: Kawaguchi / Hanzawa; Kodaka Alg.~2 on the next slide
 
 **Say:** “Data points back to people, tools, and games — not only averages.”
 
@@ -45,17 +45,16 @@ Alternative if easier: Algorithm 4 “two-voice” patch vs a denser algorithm �
 URL: https://dafm-explorer.vercel.app/
 
 Open map → click a neighbourhood → play → filter by composer or GEMS.  
-If Wi‑Fi fails: skip; Video 3 + the embedding slide are enough.
+If Wi‑Fi fails: skip; composer AIFFs + the embedding slide are enough.
 
 ## Live VGM + presets (preferred for the room)
 
-See **[LIVE_DEMOS.md](LIVE_DEMOS.md)** for the full cue sheet (L1–L4):
+See **[LIVE_DEMOS.md](LIVE_DEMOS.md)** for the cue sheet. Composer block is **inline AIFF** (YK/MN/HK/NH/NK); optional VGM leftovers:
 
 | Cue | Game | Point |
 |-----|------|-------|
-| L1 | *Streets of Rage* | Koshiro energy → high-FL preset |
+| YK…NK | Composer AIFFs in PDF | Shared grammar, different ears |
 | L2 | *Pulseman* | Alg. 5 commitment → CON=5 preset |
-| L3 | *Nightmare Circus* | GEMS title → tool-shaped patch |
-| L4 | *Thunder Force IV* | custom FM → different CON neighbour |
+| NC / TF4 | GEMS vs non-GEMS | Tool-shaped patch contrast |
 
 Prepare offline VGMs in `videos/vgm/` and keep DAFMExplorer tabs pre-filtered.

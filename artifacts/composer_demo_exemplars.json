@@ -1,0 +1,340 @@
+{
+  "note_midi": 60,
+  "exemplars": [
+    {
+      "id": "YK",
+      "label": "Koshiro",
+      "Name": "Instrument 6",
+      "Filename": "Streets_of_Rage_-_Moon_Beach.opm",
+      "CON": 4,
+      "FL": 7,
+      "Brightness": 0.747,
+      "aiff": "composer_koshiro_con4_fl7_b0p747.aiff",
+      "params": {
+        "algorithm": 4,
+        "feedback": 7,
+        "ams": 0,
+        "pms": 0,
+        "lfrq": 0,
+        "operators": {
+          "m1": {
+            "ar": 31,
+            "d1r": 0,
+            "d2r": 0,
+            "rr": 15,
+            "d1l": 3,
+            "tl": 0,
+            "ks": 0,
+            "mul": 2,
+            "dt1": 6,
+            "ams_en": 0
+          },
+          "c1": {
+            "ar": 31,
+            "d1r": 17,
+            "d2r": 18,
+            "rr": 15,
+            "d1l": 2,
+            "tl": 2,
+            "ks": 0,
+            "mul": 2,
+            "dt1": 6,
+            "ams_en": 0
+          },
+          "m2": {
+            "ar": 31,
+            "d1r": 0,
+            "d2r": 31,
+            "rr": 15,
+            "d1l": 2,
+            "tl": 0,
+            "ks": 0,
+            "mul": 3,
+            "dt1": 0,
+            "ams_en": 0
+          },
+          "c2": {
+            "ar": 31,
+            "d1r": 17,
+            "d2r": 18,
+            "rr": 15,
+            "d1l": 4,
+            "tl": 2,
+            "ks": 0,
+            "mul": 3,
+            "dt1": 0,
+            "ams_en": 0
+          }
+        }
+      }
+    },
+    {
+      "id": "MN",
+      "label": "Nakamura",
+      "Name": "Instrument 1",
+      "Filename": "Sonic_the_Hedgehog_-_Star_Light_Zone.opm",
+      "CON": 4,
+      "FL": 7,
+      "Brightness": 0.562,
+      "aiff": "composer_nakamura_con4_fl7_b0p562.aiff",
+      "params": {
+        "algorithm": 4,
+        "feedback": 7,
+        "ams": 0,
+        "pms": 0,
+        "lfrq": 0,
+        "operators": {
+          "m1": {
+            "ar": 16,
+            "d1r": 2,
+            "d2r": 3,
+            "rr": 15,
+            "d1l": 2,
+            "tl": 30,
+            "ks": 0,
+            "mul": 8,
+            "dt1": 6,
+            "ams_en": 0
+          },
+          "c1": {
+            "ar": 16,
+            "d1r": 7,
+            "d2r": 9,
+            "rr": 15,
+            "d1l": 2,
+            "tl": 32,
+            "ks": 0,
+            "mul": 4,
+            "dt1": 0,
+            "ams_en": 0
+          },
+          "m2": {
+            "ar": 16,
+            "d1r": 4,
+            "d2r": 3,
+            "rr": 15,
+            "d1l": 2,
+            "tl": 30,
+            "ks": 0,
+            "mul": 6,
+            "dt1": 0,
+            "ams_en": 0
+          },
+          "c2": {
+            "ar": 16,
+            "d1r": 7,
+            "d2r": 9,
+            "rr": 15,
+            "d1l": 2,
+            "tl": 32,
+            "ks": 0,
+            "mul": 3,
+            "dt1": 6,
+            "ams_en": 0
+          }
+        }
+      }
+    },
+    {
+      "id": "HK",
+      "label": "Kawaguchi",
+      "Name": "Instrument 3",
+      "Filename": "Golden_Axe_-_Turtle_Village_2.opm",
+      "CON": 5,
+      "FL": 7,
+      "Brightness": 0.585,
+      "aiff": "composer_kawaguchi_con5_fl7_b0p585.aiff",
+      "params": {
+        "algorithm": 5,
+        "feedback": 7,
+        "ams": 0,
+        "pms": 0,
+        "lfrq": 0,
+        "operators": {
+          "m1": {
+            "ar": 30,
+            "d1r": 11,
+            "d2r": 1,
+            "rr": 15,
+            "d1l": 2,
+            "tl": 29,
+            "ks": 1,
+            "mul": 1,
+            "dt1": 3,
+            "ams_en": 0
+          },
+          "c1": {
+            "ar": 18,
+            "d1r": 1,
+            "d2r": 0,
+            "rr": 15,
+            "d1l": 2,
+            "tl": 32,
+            "ks": 1,
+            "mul": 2,
+            "dt1": 3,
+            "ams_en": 0
+          },
+          "m2": {
+            "ar": 31,
+            "d1r": 5,
+            "d2r": 0,
+            "rr": 15,
+            "d1l": 2,
+            "tl": 23,
+            "ks": 0,
+            "mul": 2,
+            "dt1": 3,
+            "ams_en": 0
+          },
+          "c2": {
+            "ar": 18,
+            "d1r": 2,
+            "d2r": 0,
+            "rr": 15,
+            "d1l": 1,
+            "tl": 23,
+            "ks": 0,
+            "mul": 2,
+            "dt1": 3,
+            "ams_en": 0
+          }
+        }
+      }
+    },
+    {
+      "id": "NH",
+      "label": "Hanzawa",
+      "Name": "Instrument 8",
+      "Filename": "Gunstar_Heroes_-_Dancing-Smash-Hero.opm",
+      "CON": 5,
+      "FL": 7,
+      "Brightness": 0.626,
+      "aiff": "composer_hanzawa_con5_fl7_b0p626.aiff",
+      "params": {
+        "algorithm": 5,
+        "feedback": 7,
+        "ams": 0,
+        "pms": 0,
+        "lfrq": 0,
+        "operators": {
+          "m1": {
+            "ar": 31,
+            "d1r": 31,
+            "d2r": 6,
+            "rr": 8,
+            "d1l": 1,
+            "tl": 19,
+            "ks": 1,
+            "mul": 0,
+            "dt1": 6,
+            "ams_en": 0
+          },
+          "c1": {
+            "ar": 31,
+            "d1r": 6,
+            "d2r": 9,
+            "rr": 10,
+            "d1l": 1,
+            "tl": 15,
+            "ks": 0,
+            "mul": 1,
+            "dt1": 0,
+            "ams_en": 0
+          },
+          "m2": {
+            "ar": 31,
+            "d1r": 6,
+            "d2r": 6,
+            "rr": 10,
+            "d1l": 0,
+            "tl": 15,
+            "ks": 0,
+            "mul": 1,
+            "dt1": 1,
+            "ams_en": 0
+          },
+          "c2": {
+            "ar": 17,
+            "d1r": 6,
+            "d2r": 9,
+            "rr": 10,
+            "d1l": 1,
+            "tl": 15,
+            "ks": 1,
+            "mul": 0,
+            "dt1": 0,
+            "ams_en": 0
+          }
+        }
+      }
+    },
+    {
+      "id": "NK",
+      "label": "Kodaka",
+      "Name": "Instrument 6",
+      "Filename": "Super_Fantasy_Zone_-_Recollection.opm",
+      "CON": 2,
+      "FL": 7,
+      "Brightness": 0.553,
+      "aiff": "composer_kodaka_con2_fl7_b0p553.aiff",
+      "params": {
+        "algorithm": 2,
+        "feedback": 7,
+        "ams": 0,
+        "pms": 0,
+        "lfrq": 0,
+        "operators": {
+          "m1": {
+            "ar": 24,
+            "d1r": 3,
+            "d2r": 0,
+            "rr": 4,
+            "d1l": 1,
+            "tl": 30,
+            "ks": 0,
+            "mul": 1,
+            "dt1": 1,
+            "ams_en": 0
+          },
+          "c1": {
+            "ar": 24,
+            "d1r": 3,
+            "d2r": 0,
+            "rr": 4,
+            "d1l": 2,
+            "tl": 32,
+            "ks": 0,
+            "mul": 2,
+            "dt1": 3,
+            "ams_en": 0
+          },
+          "m2": {
+            "ar": 24,
+            "d1r": 3,
+            "d2r": 0,
+            "rr": 4,
+            "d1l": 2,
+            "tl": 37,
+            "ks": 0,
+            "mul": 3,
+            "dt1": 5,
+            "ams_en": 0
+          },
+          "c2": {
+            "ar": 10,
+            "d1r": 5,
+            "d2r": 0,
+            "rr": 8,
+            "d1l": 2,
+            "tl": 9,
+            "ks": 0,
+            "mul": 2,
+            "dt1": 3,
+            "ams_en": 0
+          }
+        }
+      }
+    }
+  ]
+}
