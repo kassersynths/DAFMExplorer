@@ -1,0 +1,306 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Sound Similarity in YM2612 FM Presets --- TISMIR scaffold
+%
+% Template note: this manuscript uses the official lightweight TISMIR style
+% (tismir.sty from https://github.com/ismir/paper_templates_TISMIR_old).
+% For camera-ready typesetting closer to the published format, replace with
+% the newer template from https://github.com/ismir/paper_templates_TISMIR_new
+% (or Overleaf snip). Either official template is accepted by TISMIR.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+% Remove the `review` option for the camera-ready version.
+\usepackage[review]{tismir}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{xcolor}
+
+% Figures and tables produced by: research/ make figures  (dafm figures)
+\graphicspath{{figures/}}
+
+\title{Sound Similarity in a Large Corpus of YM2612 FM Presets:
+       From Register Space to Perceptual Distance}
+%
+\author{%
+Author Name\thanks{Affiliation, Address}%
+}
+
+\date{}
+
+\authorref{Author,~N.}
+\authorshort{Author}
+% \titleshort{Sound Similarity in YM2612 FM Presets}
+% \type{research}
+
+\begin{document}
+
+\twocolumn[{%
+\maketitleblock
+\begin{abstract}
+% Max ~250 words. Structure only --- no invented results.
+Frequency modulation (FM) synthesis on Yamaha FM chips underlies a large body
+of video-game and electronic music, yet systematic evidence on how register-level
+parameter changes relate to perceived timbre remains sparse.
+This paper studies sound similarity over a large corpus of real-world YM2612
+presets extracted from Mega Drive / Genesis games.
+\textbf{Scope boundary:} the analysis starts from scratch; the only inheritance
+from prior repository work is the source instrument CSV.
+We render presets under a fixed protocol, extract audio descriptors and embedding
+spaces, and evaluate seven experiments (E1--E7) addressing five research
+questions (RQ1--RQ5).
+E1 preregisters a falsifiable hypothesis from Chowning's FM theory: at equal
+parametric distance, modulator total-level (TL) changes should induce larger
+perceptual distance than carrier TL changes.
+Hardware validation notes the instrument's 8\,MHz master clock versus the
+console's $\approx$7.67\,MHz clock.
+% TODO: insert quantitative summary from artifacts/results when available.
+\end{abstract}
+}] % end twocolumn preamble
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+\label{sec:intro}
+
+Yamaha four-operator FM (as in the YM2612 / OPN2) maps a compact register set
+to a wide range of spectra via operator routing (algorithms), ratios, envelopes
+and total levels~\citep{chowning1973}.
+Game-music presets provide a culturally grounded, large-scale sample of how
+practitioners actually programmed the chip.
+Despite progress on synthesizer programming and sound matching
+\cite{yeeking2018,chen2022sound2synth,levaillant2024spinvae2},
+there is still limited work that (i)~starts from a large \emph{in-the-wild}
+chip-FM corpus, (ii)~separates parameter-space geometry from audio-space
+geometry, and (iii)~tests theory-driven predictions such as modulator versus
+carrier sensitivity.
+
+\paragraph{Scope.}
+This study does \emph{not} reuse prior cluster labels, feature choices or
+hyperparameters from earlier exploratory work in the same repository.
+The sole inherited artifact is
+\texttt{data/processed/all\_instruments\_final.csv}.
+All representations, distances and evaluation protocols are defined and
+justified here.
+
+\paragraph{Research questions.}
+\begin{description}
+  \item[RQ1] At equal parametric distance, do modulator TL changes yield larger
+    audio/perceptual distance than carrier TL changes, as predicted by
+    Chowning~\cite{chowning1973}?
+  \item[RQ2] Which effective YM2612 parameters most strongly control timbral
+    change under controlled perturbations?
+  \item[RQ3] Do audio descriptor / embedding spaces recover known perceptual
+    dimensions of timbre for FM (cf.\ McAdams et~al.~\cite{mcadams1995})?
+  \item[RQ4] How do neighbourhoods in parameter space and in audio space
+    relate (rank correlation; MFCC-based distances)?
+  \item[RQ5] Do automatic distances agree with human odd-one-out judgments?
+\end{description}
+
+\paragraph{Contributions (claimed).}
+Corpus curation and rendering protocol; multi-condition similarity spaces;
+preregistered E1 and evaluation suite E1--E7 with clustered inference.
+Morphing / PCA macro-controls are discussed only as future outlook
+(Section~\ref{sec:outlook}) and are \emph{not} claimed as contributions.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Related Work}
+\label{sec:related}
+
+\paragraph{FM synthesis and programming.}
+Chowning's formulation~\cite{chowning1973} remains the theoretical backbone.
+Classical optimization for FM tone matching includes genetic and related
+search~\citep{horner1993,dahlstedt2001,dahlstedt2007}.
+More recent interactive and evolutionary systems continue this
+line~\citep{krekovic2019}.
+
+\paragraph{Automatic synthesizer programming and sound matching.}
+Deep and hybrid approaches estimate or search parameters for VSTs and FM
+instruments~\citep{yeeking2018,chen2022sound2synth,yang2023whitebox,masuda2023,roma2024}.
+Latent preset models for DX7-class FM include SPINVAE /
+SPINVAE-2~\citep{levaillant2020nime,levaillant2021dafx,levaillant2024spinvae2}.
+Differentiable FM and DDSP-style pipelines offer alternative
+routes~\citep{caspe2022ddx7,hayes2024ddsp}.
+Neural proxies for black-box synths provide perceptually informed preset
+embeddings~\citep{combes2025jaes}.
+
+\paragraph{Timbre descriptors and corpora.}
+The Timbre Toolbox~\citep{peeters2011} and related MDS /
+perceptual studies~\citep{mcadams1995,terasawa2005,schubert2006}
+motivate descriptor choices.
+Chip and game-music datasets include NES-MDB~\citep{donahue2018} and
+YM2413-MDB~\citep{choi2022}.
+Large synthetic preset resources such as synth1B1~\citep{turian2021}
+complement hand-authored banks.
+Visual exploration tools for audio collections include
+AudioStellar~\citep{garber2021}.
+Phase vocoder and related DSP tools support analysis pipelines
+\cite{driedger2014,caceres2007}.
+
+\paragraph{Differentiation from VibeFM.}
+VibeFM~\citep{rau2026vibefm} is a NIME interface for \emph{sampling and visually
+exploring} FM parameter combinations, ordering glyphs by audio similarity to
+support serendipitous discovery during composition.
+Our work differs in goal and evidence standard: we analyse a large corpus of
+\emph{existing game presets} on the YM2612, preregister theory-driven tests
+(E1), and report a multi-experiment evaluation (E1--E7) aimed at MIR claims
+about parameter--timbre geometry rather than an interactive composition tool.
+The two lines are complementary: VibeFM targets creative workflow; we target
+measurable structure in a culturally grounded chip-FM corpus.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Corpus}
+\label{sec:corpus}
+
+% TODO: insert n_presets, n_games, quarantine rates from artifacts/corpus_v1
+We start from the instrument CSV
+(\texttt{all\_instruments\_final.csv}) and rebuild a research corpus from
+scratch: validation/quarantine rules, configuration hashing, timbral-core
+grouping and TL-variant groups used by E1.
+Splits and seeds are fixed in configuration
+(\texttt{research/configs/}).
+% TODO: insert corpus summary table from tables/ when generated.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Method}
+\label{sec:method}
+
+\subsection{Rendering}
+\label{sec:render}
+Presets are rendered through a YM2612 emulation core under a fixed note,
+velocity, duration and gain protocol
+(\texttt{research/configs/render.yaml}).
+Audio is stored as FLAC with a render manifest for provenance.
+
+\paragraph{Hardware clock note.}
+Canonical Mega Drive / Genesis YM2612 clocking is approximately
+7.67\,MHz (derived from the NTSC colour subcarrier chain).
+The hardware instrument used for validation runs at 8\,MHz (a standard crystal).
+For identical registers, output frequency scales linearly with master clock, so
+an 8\,MHz instrument plays $\approx$4.3\% sharp relative to 7.67\,MHz
+($\approx$+73\,cents), with envelope times shortened by the same factor.
+We treat this as an analytically invertible resampling identity in the digital
+domain and report residuals attributable to analogue / DAC behaviour separately
+(\texttt{research/configs/hardware\_validation.yaml}).
+
+\subsection{Features}
+\label{sec:features}
+We extract hand-crafted descriptors (Timbre Toolbox-inspired and loudness-aware
+paths) and optional learned embeddings under versioned configs
+(\texttt{research/configs/features.yaml}).
+% TODO: insert feature inventory from artifacts when frozen.
+
+\subsection{Similarity spaces}
+\label{sec:spaces}
+We construct multiple conditions (parameter baseline after inertness masking;
+descriptor spaces; embedding spaces) with declared metrics and top-$k$ probes.
+Full pairwise matrices are never materialised for $\sim$38k configurations;
+rank correlations use stratified blocked sampling (E4).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Evaluation}
+\label{sec:eval}
+
+Clustered inference (within timbral core), Benjamini--Hochberg FDR and
+bootstrap effect-size CIs are declared in
+\texttt{research/configs/eval.yaml}.
+No numerical results are reported in this scaffold.
+
+\subsection{E1 --- Modulator vs.\ carrier TL (Chowning)}
+\label{sec:e1}
+Preregistered hypothesis: at equal parametric distance, pairs differing only in
+modulator TL show significantly larger perceptual/audio distance than pairs
+differing only in carrier TL, because modulator TL controls modulation index
+(spectral bandwidth) whereas carrier TL is essentially amplitude
+\cite{chowning1973}.
+Primary loudness path and null-result protocol are fixed before analysis.
+
+\subsection{E2 --- Perturbation sensitivity}
+\label{sec:e2}
+Budgeted one-parameter perturbations of effective registers; sensitivity curves
+per parameter family.
+
+\subsection{E3 --- McAdams-style dimensions}
+\label{sec:e3}
+Canonical correlation / alignment of principal audio-space axes with attack
+time, spectral centroid and spectral flux~\citep{mcadams1995,peeters2011}.
+
+\subsection{E4 --- Rank correlation across spaces}
+\label{sec:e4}
+Spearman correlation between parameter-space and audio-space distances on
+stratified pair samples (no full matrix).
+
+\subsection{E5 --- MFCCD anchors}
+\label{sec:e5}
+MFCC distance distributions with published Sound2Synth-style thresholds as
+external anchors~\citep{chen2022sound2synth}.
+
+\subsection{E6 --- Listening test}
+\label{sec:e6}
+Triadic odd-one-out; if infeasible, RQ5 is removed rather than left unanswered.
+
+\subsection{E7 --- Game footprint (secondary)}
+\label{sec:e7}
+Same-game retrieval metrics, aggregated per game to avoid size bias; declared
+confounded (OSTs intentionally mix timbres).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Results}
+\label{sec:results}
+
+% Do NOT invent numbers. Fill from research/artifacts/results after evaluation.
+TODO: insert from \texttt{artifacts/results} (E1--E7 tables and figures).
+Placeholder figure slots:
+
+\begin{itemize}
+  \item Figure~\ref{fig:e1} --- E1 modulator vs.\ carrier TL separation
+  \item Figure~\ref{fig:e2} --- E2 perturbation sensitivity
+  \item Figure~\ref{fig:spaces} --- space neighbourhood / embedding overview
+\end{itemize}
+
+% Example include (uncomment when files exist):
+% \begin{figure}[t]
+%   \centering
+%   \includegraphics[width=\columnwidth]{e1_tl_carrier_vs_modulator.pdf}
+%   \caption{TODO: caption from artifacts/results.}
+%   \label{fig:e1}
+% \end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Discussion and Limitations}
+\label{sec:discussion}
+
+Limitations include emulator--hardware residual error after clock alignment;
+descriptor vs.\ embedding disagreements; confounding in E7; and dependence of
+RQ5 on the listening study.
+% TODO: discuss actual outcomes without overclaiming.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Future Outlook}
+\label{sec:outlook}
+
+PCA-based morph / macro-controls over effective parameters are a natural
+\emph{downstream} application of a validated similarity space (Capacity~A in
+the research package).
+They are \textbf{not} claimed as contributions of this paper; any morph
+results belong to follow-up systems work, not to the MIR evaluation here.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Conclusion}
+\label{sec:conclusion}
+
+We outlined a from-scratch study of sound similarity for YM2612 game presets,
+centred on RQ1--RQ5 and experiments E1--E7, with a Chowning-grounded E1
+hypothesis and an explicit 8\,MHz vs.\ 7.67\,MHz hardware-clock note.
+% TODO: one-paragraph empirical takeaway once results exist.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Bibliography
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Style comes from tismir.sty (natbib + apalike). Do not override with plain.
+\bibliography{references}
+
+\end{document}

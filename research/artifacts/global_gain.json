@@ -1,0 +1,8 @@
+{
+  "probe_gain": 0.000244140625,
+  "target_peak_dbfs": -3.0,
+  "peak_max_linear": 0.827392578125,
+  "peak_max_dbfs": -1.6457675826079219,
+  "global_gain": 0.00020889518571382058,
+  "n_probe": 5
+}

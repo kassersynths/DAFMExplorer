@@ -1,0 +1,182 @@
+\begin{thebibliography}{}
+
+\bibitem[C{\'a}ceres, 2007]{caceres2007}
+C{\'a}ceres, J.-P. (2007).
+\newblock An{\'a}lisis espectral 1: Transformada corta de {F}ourier y ventanas.
+\newblock Technical report, CCRMA, Stanford University.
+\newblock CCRMA technical notes on spectral analysis / related
+  additive-synthesis materials (2007).
+
+\bibitem[Caspe et~al., 2022]{caspe2022ddx7}
+Caspe, F., McPherson, A., and Sandler, M. (2022).
+\newblock {DDX7}: Differentiable {FM} synthesis of musical instrument sounds.
+\newblock In {\em Proceedings of the 23rd International Society for Music
+  Information Retrieval Conference (ISMIR)}, pages 608--615.
+
+\bibitem[Chen et~al., 2022]{chen2022sound2synth}
+Chen, Z., Jing, Y., Yuan, S., Xu, Y., Wu, J., and Zhao, H. (2022).
+\newblock {Sound2Synth}: Interpreting sound via {FM} synthesizer parameters
+  estimation.
+\newblock In {\em Proceedings of the Thirty-First International Joint
+  Conference on Artificial Intelligence (IJCAI-22)}, pages 4921--4928.
+
+\bibitem[Choi et~al., 2022]{choi2022}
+Choi, E., Chung, Y., Lee, S., Jeon, J., Kwon, T., and Nam, J. (2022).
+\newblock {YM2413-MDB}: A multi-instrumental {FM} video game music dataset with
+  emotion annotations.
+\newblock In {\em Proceedings of the 23rd International Society for Music
+  Information Retrieval Conference (ISMIR)}, pages 100--108, Bengaluru, India.
+
+\bibitem[Chowning, 1973]{chowning1973}
+Chowning, J.~M. (1973).
+\newblock The synthesis of complex audio spectra by means of frequency
+  modulation.
+\newblock {\em Journal of the Audio Engineering Society}, 21(7):526--534.
+
+\bibitem[Combes et~al., 2025]{combes2025jaes}
+Combes, P., Weinzierl, S., and Obermayer, K. (2025).
+\newblock Neural proxies for sound synthesizers: Learning perceptually informed
+  preset representations.
+\newblock {\em Journal of the Audio Engineering Society}, 73(9):561--577.
+
+\bibitem[Dahlstedt, 2001]{dahlstedt2001}
+Dahlstedt, P. (2001).
+\newblock A {MutaSynth} in {P}aram{\'e}trie: Interactive composition through
+  evolution.
+\newblock In {\em Proceedings of the International Computer Music Conference
+  (ICMC)}.
+
+\bibitem[Dahlstedt, 2007]{dahlstedt2007}
+Dahlstedt, P. (2007).
+\newblock Evolution in creative sound design.
+\newblock In Miranda, E.~R. and Biles, J.~A., editors, {\em Evolutionary
+  Computer Music}, pages 194--210. Springer.
+
+\bibitem[Donahue et~al., 2018]{donahue2018}
+Donahue, C., Mao, H.~H., and McAuley, J. (2018).
+\newblock The {NES} music database: A multi-instrumental dataset with
+  expressive performance attributes.
+\newblock In {\em Proceedings of the 19th International Society for Music
+  Information Retrieval Conference (ISMIR)}, pages 475--482.
+\newblock NES-MDB.
+
+\bibitem[Driedger et~al., 2014]{driedger2014}
+Driedger, J., M{\"u}ller, M., and Disch, S. (2014).
+\newblock Extending harmonic-percussive separation of audio signals.
+\newblock In {\em Proceedings of the 15th International Society for Music
+  Information Retrieval Conference (ISMIR)}, pages 611--616.
+
+\bibitem[Garber et~al., 2021]{garber2021}
+Garber, L., Ciccola, T., and Amusategui, J.~C. (2021).
+\newblock {AudioStellar}, an open source corpus-based musical instrument for
+  latent sound structure discovery and sonic experimentation.
+\newblock In {\em Proceedings of the International Computer Music Conference
+  (ICMC)}, pages 62--67, Santiago, Chile.
+
+\bibitem[Hayes et~al., 2024]{hayes2024ddsp}
+Hayes, B., Shier, J., Fazekas, G., McPherson, A., and Saitis, C. (2024).
+\newblock A review of differentiable digital signal processing for music and
+  speech synthesis.
+\newblock {\em Frontiers in Signal Processing}, 3:1284100.
+
+\bibitem[Horner et~al., 1993]{horner1993}
+Horner, A., Beauchamp, J., and Haken, L. (1993).
+\newblock Machine tongues {XVI}: Genetic algorithms and their application to
+  {FM} matching synthesis.
+\newblock {\em Computer Music Journal}, 17(4):17--29.
+
+\bibitem[Krekovi{\'c}, 2019]{krekovic2019}
+Krekovi{\'c}, G. (2019).
+\newblock Insights in habits and attitudes regarding programming sound
+  synthesizers: A quantitative study.
+\newblock In {\em Proceedings of the Sound and Music Computing Conference
+  (SMC)}.
+
+\bibitem[Le~Vaillant and Dutoit, 2024]{levaillant2024spinvae2}
+Le~Vaillant, G. and Dutoit, T. (2024).
+\newblock Latent space interpolation of synthesizer parameters using
+  timbre-regularized auto-encoders.
+\newblock {\em IEEE/ACM Transactions on Audio, Speech, and Language
+  Processing}, 32:3379--3392.
+\newblock SPINVAE-2.
+
+\bibitem[Le~Vaillant et~al., 2021]{levaillant2021dafx}
+Le~Vaillant, G., Dutoit, T., and Dekeyser, S. (2021).
+\newblock Improving synthesizer programming from variational autoencoders
+  latent space.
+\newblock In {\em Proceedings of the 24th International Conference on Digital
+  Audio Effects (DAFx20in21)}, pages 276--283.
+
+\bibitem[Le~Vaillant et~al., 2020]{levaillant2020nime}
+Le~Vaillant, G., Dutoit, T., and Giot, R. (2020).
+\newblock Analytic vs.\ holistic approaches for the live search of sound
+  presets using graphical interpolation.
+\newblock In {\em Proceedings of the International Conference on New Interfaces
+  for Musical Expression (NIME)}, pages 227--232, Birmingham, UK.
+
+\bibitem[Masuda and Saito, 2023]{masuda2023}
+Masuda, N. and Saito, D. (2023).
+\newblock Improving semi-supervised differentiable synthesizer sound matching
+  for practical applications.
+\newblock {\em IEEE/ACM Transactions on Audio, Speech, and Language
+  Processing}, 31:863--875.
+
+\bibitem[McAdams et~al., 1995]{mcadams1995}
+McAdams, S., Winsberg, S., Donnadieu, S., {De Soete}, G., and Krimphoff, J.
+  (1995).
+\newblock Perceptual scaling of synthesized musical timbres: Common dimensions,
+  specificities, and latent subject classes.
+\newblock {\em Psychological Research}, 58(3):177--192.
+
+\bibitem[Peeters et~al., 2011]{peeters2011}
+Peeters, G., Giordano, B.~L., Susini, P., Misdariis, N., and McAdams, S.
+  (2011).
+\newblock The {Timbre Toolbox}: Extracting audio descriptors from musical
+  signals.
+\newblock {\em The Journal of the Acoustical Society of America},
+  130(5):2902--2916.
+
+\bibitem[Rau et~al., 2026]{rau2026vibefm}
+Rau, S., Tobien, F., and Sedlmair, M. (2026).
+\newblock {VibeFM}: Visual exploration of {FM} synthesis.
+\newblock In {\em Proceedings of the International Conference on New Interfaces
+  for Musical Expression (NIME)}, pages 759--766, London, United Kingdom.
+
+\bibitem[Roma, 2024]{roma2024}
+Roma, G. (2024).
+\newblock Sound matching using synthesizer ensembles.
+\newblock In {\em Proceedings of the 27th International Conference on Digital
+  Audio Effects (DAFx24)}.
+
+\bibitem[Schubert and Wolfe, 2006]{schubert2006}
+Schubert, E. and Wolfe, J. (2006).
+\newblock Does timbral brightness scale with frequency and spectral centroid?
+\newblock {\em Acta Acustica united with Acustica}, 92(5):820--825.
+
+\bibitem[Terasawa et~al., 2005]{terasawa2005}
+Terasawa, H., Slaney, M., and Berger, J. (2005).
+\newblock Perceptual distance in timbre space.
+\newblock In {\em Proceedings of the International Conference on Auditory
+  Display (ICAD)}.
+
+\bibitem[Turian et~al., 2021]{turian2021}
+Turian, J., Shier, J., Tzanetakis, G., McNally, K., and Henry, M. (2021).
+\newblock One billion audio sounds from {GPU}-enabled modular synthesis.
+\newblock In {\em Proceedings of the 24th International Conference on Digital
+  Audio Effects (DAFx20in21)}, pages 222--229, Vienna, Austria.
+\newblock Introduces synth1B1 and torchsynth.
+
+\bibitem[Yang et~al., 2023]{yang2023whitebox}
+Yang, Y., Jin, Z., Barnes, C., and Finkelstein, A. (2023).
+\newblock White box search over audio synthesizer parameters.
+\newblock In {\em Proceedings of the 24th International Society for Music
+  Information Retrieval Conference (ISMIR)}, Milan, Italy.
+
+\bibitem[Yee-King et~al., 2018]{yeeking2018}
+Yee-King, M.~J., Fedden, L., and d'Inverno, M. (2018).
+\newblock Automatic programming of {VST} sound synthesizers using deep networks
+  and other techniques.
+\newblock {\em IEEE/ACM Transactions on Audio, Speech, and Language
+  Processing}, 26(7):1196--1207.
+
+\end{thebibliography}

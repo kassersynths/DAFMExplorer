@@ -49,6 +49,24 @@ webapp/dist-ssr/
 Thumbs.db
 .DS_Store
 
+# Research pipeline scratch (audio is regenerated from the manifest)
+research/scratch/
+research/**/node_modules/
+research/**/*.egg-info/
+research/.pytest_cache/
+research/.ruff_cache/
+
+# Large generated research artifacts (keep small stats in git if desired)
+research/artifacts/*.parquet
+research/artifacts/**/*.parquet
+research/artifacts/hf_export/
+research/artifacts/spaces/
+research/artifacts/results/
+research/artifacts/morph/
+research/artifacts/hw/*.vgm
+research/artifacts/hw/*.wav
+!research/artifacts/.gitkeep
+
 # Local speaker notes / TTS drafts (not for GitHub)
 Ludo2026-DAFMExplorer-LaTeX/notes/
 

@@ -1,0 +1,37 @@
+{
+  "stage": "render_manifest",
+  "artifact": "render_manifest.parquet",
+  "created_utc": "2026-08-07T12:04:33.916653+00:00",
+  "environment": {
+    "package_version": "0.1.0",
+    "python": "3.12.10",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "hostname": "PC_ABRAHAM",
+    "machine_profile": "a",
+    "machine_label": "Machine A",
+    "git_commit": "21aff33bf183ea833e6cc9469cdddb3a112915b0",
+    "dependencies": {
+      "numpy": "2.0.2",
+      "pandas": "2.2.3",
+      "pyarrow": "17.0.0",
+      "scipy": "1.14.1",
+      "sklearn": "1.5.2",
+      "librosa": "0.10.2.post1",
+      "soundfile": "0.12.1",
+      "soxr": "0.5.0.post1",
+      "umap": "0.5.7",
+      "hnswlib": "absent",
+      "statsmodels": "0.14.6"
+    }
+  },
+  "inputs": {
+    "corpus": "C:\\Users\\bramb\\Documents\\kassersynths\\DAFMExplorer\\research\\artifacts\\corpus_v1.parquet"
+  },
+  "params": {
+    "config_hash": "30b56d4f0e11cb5c0d5464861197994641f18b21e83017179e7bd65131823a18"
+  },
+  "metrics": {
+    "n_configs": 38155
+  },
+  "seeds": {}
+}

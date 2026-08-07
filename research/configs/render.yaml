@@ -1,0 +1,109 @@
+# Render protocol for the canonical corpus.
+#
+# Every key in this file is hashed into `config_hash` and recorded in the
+# manifest, so any change here invalidates downstream artifacts by design.
+#
+# The protocol sits inside the frame established by the published precedent
+# (SPINVAE-2, Le Vaillant & Dutoit 2024, renders ~30k DX7 presets with a fixed
+# MIDI note and a sustain+release window; SynthScribe uses middle C and 4 s) and
+# is cited as such in the paper rather than inherited from any earlier render.
+
+protocol_version: 1
+
+chip:
+  # Mega Drive NTSC clock. NOT a round number because the console derives it
+  # from the NTSC colour subcarrier chain: 53.693175 MHz / 7 = 7670453 Hz.
+  # Chosen as canonical for historical fidelity: these presets were authored for
+  # that machine and their authors heard them at that clock.
+  clock_hz: 7670453
+  # Emulator DAC precision setting. Changes the output, so it is declared and
+  # hashed rather than left implicit.
+  dac_precision: 14
+  channel: 0
+
+timing:
+  sample_rate: 44100
+  note_midi: 60          # middle C, matching SynthScribe
+  pre_roll_s: 0.05       # silence before key-on, keeps the attack intact
+  sustain_s: 2.0
+  release_s: 1.0
+  # Applied at the very edges only, to avoid a click at file boundaries. Short
+  # enough not to touch the measured attack (log attack time) or the release.
+  edge_fade_s: 0.005
+
+# Decisions that change which parameters matter. Declared explicitly because
+# they are not obvious to a reader and they determine the inertness audit.
+chip_writes:
+  # LFO stays DISABLED (register 0x22 is never written with the enable bit).
+  # Consequence, applied consistently everywhere: AMS, PMS and the four AMS-EN
+  # columns are declared OUT OF SCOPE and excluded from the parameter space too.
+  # Rationale: keeps the render static, which is what the FM preset literature
+  # does, and keeps the analysis about timbre rather than temporal modulation.
+  lfo_enable: false
+  lfo_frequency_reg: 0
+  # 0xB4 is forced to 0xC0 => output on both channels. PAN from the corpus is
+  # therefore inert, and the stereo pair is summed to mono after rendering.
+  force_both_channels: true
+  # SSG-EG (0x90) is explicitly written to zero rather than left at reset state.
+  ssg_eg: 0
+  # Key-on writes all four slots (0x28 <- 0xF0 | channel).
+  key_on_slots: 15
+  dac_enable: false      # register 0x2B, YM2612 PCM DAC channel off
+  mode_register: 0       # register 0x27, normal mode (no CSM / 3-slot)
+
+mix:
+  # Mono downmix convention, kept identical in the renderer, the VGM player and
+  # the hardware recording pipeline.
+  downmix: "mean"        # 0.5 * (L + R)
+
+gain:
+  # The most delicate decision of this phase.
+  #
+  # Clipping is non-linear distortion: it injects high harmonics that the
+  # descriptors would read as genuine brightness, contaminating the features in
+  # exactly the direction of the finding. So we render in float32, measure the
+  # true peak over the WHOLE corpus, and only then pick ONE global gain.
+  #
+  # Global, never per file: per-file normalisation would destroy level
+  # information, which is precisely what E1 needs in order to tell a carrier-TL
+  # change (loudness) from a modulator-TL change (timbre).
+  mode: "global"
+  # Filled in by `dafm render-gain` after the measurement pass. Until then the
+  # renderer refuses to write final audio.
+  global_gain: null
+  # Headroom below full scale for the loudest preset in the corpus.
+  target_peak_dbfs: -3.0
+  # Reference gain used only during the measurement pass.
+  probe_gain: 0.000244140625   # 1/4096
+
+output:
+  format: "flac"
+  # 24 bits, not 16. The corpus spans very loud and very quiet presets under one
+  # global gain, so a preset sitting at -60 dBFS would keep ~6 useful bits in
+  # 16-bit and its descriptors would be dominated by quantisation noise.
+  bit_depth: 24
+  # Sharded into subdirectories by hash prefix: tens of thousands of files in a
+  # single directory is painful on Windows.
+  shard_prefix_len: 2
+
+audibility:
+  # Measured on the rendered audio, never inferred from parameters.
+  # Inaudible renders are FLAGGED, not deleted: the proportion is a reportable
+  # characterisation of the corpus.
+  peak_dbfs_threshold: -60.0
+  rms_dbfs_threshold: -70.0
+  min_audible_duration_s: 0.05
+
+determinism:
+  # Hash the DECODED PCM, not the file bytes. Two FLAC encoder versions produce
+  # different bytes for identical audio, so hashing the file would raise false
+  # divergence alarms in exactly the two-machine scenario where the check
+  # matters most.
+  hash_target: "pcm"
+  hash_algorithm: "sha256"
+
+ablation:
+  # KS makes timbre depend on pitch, so a multi-note variant is prepared as an
+  # ablation over a subset rather than assumed away.
+  multi_note_midi: [48, 60, 72]
+  multi_note_subset_size: 2000

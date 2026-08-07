@@ -1,0 +1,162 @@
+# Feature extraction configuration.
+
+feature_version: 1
+
+loudness:
+  # Not optional: TL *is* level, and level contaminates almost every timbre
+  # descriptor. Extracted along BOTH paths, with a suffix per path in the
+  # Parquet. E1 depends critically on this, because the normalised path is what
+  # isolates the timbral change from the volume change.
+  paths:
+    - name: "raw"
+      normalize: false
+    - name: "r128"
+      normalize: true
+      target_lufs: -23.0
+      # Guard: a near-silent render would need absurd gain to reach -23 LUFS,
+      # which would amplify quantisation noise into the descriptors.
+      max_gain_db: 40.0
+
+resampling:
+  # Each extractor expects its own rate and the render comes out at 44.1 kHz.
+  # Different resamplers give slightly different features, which would break
+  # reproducibility across machines, so the resampler and its quality are fixed
+  # here. Always resampled FROM the original FLAC, never chained.
+  backend: "soxr"
+  quality: "VHQ"
+  never_chain: true
+
+family_a:
+  enabled: true
+  sample_rate: 44100
+  frame_length: 2048
+  hop_length: 512
+  n_fft: 2048
+  window: "hann"
+  center: true
+
+  # Timbre Toolbox battery (Peeters et al. 2011) implemented over librosa.
+  timbre_toolbox:
+    n_mfcc: 20
+    mfcc_stats: ["mean", "std"]
+    spectral:
+      - "centroid"
+      - "spread"
+      - "skewness"
+      - "kurtosis"
+      - "rolloff"
+      - "flatness"
+      - "bandwidth"
+      - "flux"
+      - "crest"
+      - "slope"
+      - "decrease"
+    temporal:
+      - "log_attack_time"
+      - "temporal_centroid"
+      - "effective_duration"
+      - "release_slope"
+      - "zero_crossing_rate"
+    harmonic:
+      - "f0_median"
+      - "inharmonicity"
+      - "odd_even_ratio"
+      - "tristimulus"
+    # Attack detection thresholds for log attack time, fixed rather than
+    # left to library defaults.
+    attack_start_ratio: 0.02
+    attack_stop_ratio: 0.80
+
+  # Harmonic/percussive ratio via HPSS (Driedger, Muller & Disch 2014).
+  # Cheap, and it covers an axis the spectral descriptors alone capture badly:
+  # a corpus of game soundtracks mixes tonal presets with percussion synthesised
+  # on the same chip, and that distinction is likely a principal axis.
+  hpss:
+    enabled: true
+    margin: 1.0
+    kernel_size: 31
+
+  # AudioCommons Timbral Models.
+  # RISK: `timbral_models` is unmaintained and pinned to old numpy/librosa, so
+  # it is likely to fail on Python 3.12. Mitigation: isolated environment and,
+  # if it still breaks, a DECLARED fallback to Timbre Toolbox + embeddings with
+  # the absence documented. This never blocks the project.
+  audiocommons:
+    enabled: true
+    isolated: true
+    runner: ["uv", "run", "--with", "timbral_models", "--with", "numpy<2", "python"]
+    models:
+      - "brightness"
+      - "hardness"
+      - "depth"
+      - "roughness"
+      - "warmth"
+      - "sharpness"
+      - "booming"
+    # Reverberation model dropped: irrelevant on dry renders.
+    excluded_models: ["reverb"]
+    on_failure: "fallback"   # fallback | fail
+
+family_b:
+  enabled: true
+  # torch-first. OpenL3 is rejected as a primary because its TensorFlow chain is
+  # problematic on Windows + Python 3.12 + Blackwell, i.e. exactly the machine
+  # where these need to run.
+  models:
+    - name: "panns_cnn14"
+      sample_rate: 32000
+      dim: 2048
+      # Pin the WEIGHTS, not just the package: checkpoints get re-uploaded under
+      # the same name, and a year from now the "reproducible" pipeline would
+      # quietly produce different numbers.
+      checkpoint_sha256: null
+      checkpoint_path: null
+    - name: "laion_clap_htsat"
+      sample_rate: 48000
+      dim: 512
+      # CLAP additionally enables text queries.
+      enable_text_query: true
+      checkpoint_sha256: null
+      checkpoint_path: null
+  batch_checkpoint_every: 512
+
+decorrelation:
+  # Procedure from Le Vaillant & Dutoit: drop features correlated above the
+  # threshold, leaving a trace of what was dropped and why.
+  enabled: true
+  method: "pearson"
+  threshold: 0.9
+  # Applied to Family A only; embedding dimensions are not individually
+  # interpretable so pruning them by correlation is meaningless.
+  scope: "family_a"
+
+silence_policy:
+  # Many descriptors are undefined on silence: the spectral centroid of a zero
+  # buffer is a division by zero and log attack time does not exist. A "no NaN"
+  # test is not enough, the behaviour has to be decided.
+  #
+  # Files flagged inaudible in Phase 1 are EXCLUDED from the feature space and
+  # recorded separately with their count reported. Never impute, which would be
+  # inventing timbre where there is no sound.
+  action: "exclude"
+  record_excluded: true
+  impute: false
+
+determinism:
+  # Cheap determinism flags only; GPU embeddings still reproduce to tolerance
+  # rather than bit-exactly, and the paper says so.
+  torch_deterministic: true
+  cudnn_benchmark: false
+  seed: 42
+
+# Representation-space pipeline (Phase 3). Defaults live in spaces.py too so a
+# missing block never blocks fitting; declare them here for provenance.
+spaces:
+  pca_target_variance: 0.95
+  pca_max_components: 128
+  umap_enabled: true
+  umap_n_components: 2
+  umap_n_neighbors: 15
+  umap_min_dist: 0.1
+  kmeans_k: 16
+  kmeans_n_init: 10

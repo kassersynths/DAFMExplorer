@@ -1,0 +1,61 @@
+# Per-machine profiles, so the same command runs well on both boxes without
+# editing code. Select with DAFM_MACHINE=a|b (default: autodetect by hostname,
+# falling back to profile "a").
+#
+# General rule: VRAM only matters for embeddings, RAM only matters for pairwise
+# evaluation. Everything else is bound by cores and disk, so it does not matter
+# where it runs.
+
+default: a
+
+profiles:
+  a:
+    label: "Machine A"
+    ram_gb: 40
+    gpu: "RTX 3050 Ti Laptop"
+    vram_gb: 4
+    cuda_arch: "sm_86"
+    # Render is CPU-bound and shards are the unit of work, resume and
+    # verification. A and B render disjoint ranges.
+    render_workers: 8
+    render_shards_total: 16
+    render_shard_range: [0, 7]
+    descriptor_workers: 8
+    # 4 GB VRAM means small batches and watching for OOM. Embeddings are NOT
+    # meant to run here (see the note in profile b) but the profile stays usable
+    # for smoke tests.
+    embedding_batch_size: 8
+    embedding_device: "cuda"
+    embedding_precision: "fp32"
+    eval_pair_block_size: 2048
+
+  b:
+    label: "Machine B"
+    ram_gb: 64
+    gpu: "RTX 5060 Ti"
+    vram_gb: 16
+    # Blackwell. REQUIRES torch built against CUDA 12.8 or newer; cu121/cu124
+    # wheels have no sm_120 kernels and fail at runtime.
+    cuda_arch: "sm_120"
+    render_workers: 12
+    render_shards_total: 16
+    render_shard_range: [8, 15]
+    descriptor_workers: 12
+    embedding_batch_size: 64
+    embedding_device: "cuda"
+    embedding_precision: "fp16"
+    eval_pair_block_size: 4096
+
+policy:
+  # GPU embeddings are not bit-reproducible: accumulation order and kernel
+  # selection vary, more so in fp16. So ALL embeddings are computed on one
+  # machine to keep the set internally coherent, and the paper declares that
+  # this stage reproduces to numerical tolerance rather than bit-exactly.
+  embeddings_machine: b
+  # Audio is never synchronised between machines (~8.5 GB). Each machine
+  # regenerates scratch/ from the manifest and the PCM hash proves it is
+  # identical. Regenerating is faster than copying and it verifies at the same
+  # time.
+  sync_audio: false
+  sync_code: "git"
+  sync_features: "huggingface"

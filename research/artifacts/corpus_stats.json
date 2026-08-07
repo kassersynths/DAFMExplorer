@@ -1,0 +1,87 @@
+{
+  "corpus_id": "523a0e58c4bfd17d",
+  "source_csv_sha256": "fb84f42ff4c9f09de91a0f2e8c266be6de91b572318785e43762532dc3d9e7a2",
+  "dedup_policy": {
+    "canonicalize_dt1": true,
+    "dedup_on_effective_only": true,
+    "core_ignores_tl": true,
+    "version": "v1"
+  },
+  "encoding_policy": {
+    "one_hot_algorithm": true,
+    "mul_as_log2_multiplier": true,
+    "dt1_as_signed": true,
+    "tl_in_db": true,
+    "rates_as_log_time": false,
+    "d1l_as_db": false
+  },
+  "inertness": {
+    "effective": 38,
+    "written_inert": 6,
+    "never_written": 12,
+    "non_parameter": 3
+  },
+  "split_check": {
+    "core_overlaps": {
+      "test|train": 0,
+      "test|val": 0,
+      "train|val": 0
+    },
+    "configs_in_multiple_splits": 0,
+    "sizes": {
+      "train": 67934,
+      "val": 14227,
+      "test": 11664
+    }
+  },
+  "tl_groups": {
+    "carrier_only": 5020,
+    "modulator": 1421
+  },
+  "tl_groups_total": 6441,
+  "seed": 42,
+  "n_presets": 93832,
+  "n_presets_valid": 93825,
+  "n_presets_quarantined": 7,
+  "n_configs": 38155,
+  "n_cores": 17511,
+  "n_games": 548,
+  "n_configs_before_canonicalization": 38158,
+  "n_configs_all_56_columns": 38158,
+  "canonicalization_changes": {
+    "M1_DT1": 4025,
+    "C1_DT1": 3638,
+    "M2_DT1": 3391,
+    "C2_DT1": 3491,
+    "rows_affected": 11485
+  },
+  "quarantined_by_column": {
+    "M1_TL": 6,
+    "M1_MUL": 7,
+    "M1_DT1": 7,
+    "M2_MUL": 7
+  },
+  "inert_column_cardinality": {
+    "AMS": 1,
+    "PMS": 1,
+    "M1_AMS-EN": 1,
+    "C1_AMS-EN": 1,
+    "M2_AMS-EN": 1,
+    "C2_AMS-EN": 1,
+    "LFRQ": 1,
+    "AMD": 1,
+    "PMD": 1,
+    "WF": 1,
+    "NFRQ": 1,
+    "NE": 1,
+    "PAN": 1,
+    "SLOT": 1,
+    "M1_DT2": 1,
+    "C1_DT2": 1,
+    "M2_DT2": 1,
+    "C2_DT2": 1
+  },
+  "largest_game": "Spider-Man & X-Men",
+  "largest_game_share": 0.06399735697842954,
+  "exact_duplicate_share": 0.5933386624034106
+}

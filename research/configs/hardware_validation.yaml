@@ -1,0 +1,240 @@
+# Hardware validation battery: one VGM file, one continuous recording.
+#
+# Answers the reviewer objection "how do you know your renders sound like a real
+# YM2612?". Emulators are approximations and the real chip has known quirks,
+# starting with the discrete DAC crossover distortion (the "ladder effect").
+#
+# THE IDEA THAT MAKES THIS WORK: the VGM is the single source of truth for the
+# command stream. The same file drives both the hardware and the emulator (via
+# hardware/vgm_player.ts), so both receive exactly the same register writes with
+# exactly the same timing. That removes an entire class of confounds: there is no
+# longer any doubt about whether a difference came from how each path writes the
+# patch, the register order, or the key-on instant. What remains is chip
+# difference, which is exactly what we want to measure.
+
+battery_version: 1
+
+vgm:
+  version_bcd: 0x161        # VGM 1.61
+  header_size: 0x100
+  data_offset_field: 0x34   # relative offset stored at 0x34
+  clock_field_offset: 0x2C  # YM2612 clock
+  # 8 MHz, the clock of the Kasser Synths instrument.
+  #
+  # Reason, per the instrument's designer: an 8 MHz oscillator is a standard,
+  # easy-to-source part, while 7.67 MHz is a far less common value. The console
+  # uses that odd number because it did NOT choose it freely: it derives from the
+  # NTSC colour subcarrier chain (53.693175 MHz / 7). The Mega Drive clock is a
+  # by-product of a video constraint a modern instrument does not carry.
+  #
+  # This reframes the validation favourably: we are measuring against the clock
+  # any contemporary FM hardware would use, not an arbitrary one.
+  clock_hz: 8000000
+  gd3_track_name: "DAFM hardware validation battery v1"
+  # VGM wait commands are defined in samples at 44100 Hz BY SPECIFICATION,
+  # independently of the chip clock, so wall-clock sequence timing does not
+  # change with the clock and the manifest offsets stay valid.
+  wait_sample_rate: 44100
+  loop_offset: 0            # no loop
+
+clock_analysis:
+  canonical_clock_hz: 7670453
+  hardware_clock_hz: 8000000
+  # k = 8000000 / 7670453 = 1.042963
+  #  -> pitch  +4.3 % (= +72.8 cents) for the same F-num and Block
+  #  -> all envelope times 4.1 % shorter in wall-clock time
+  #
+  # THE ELEGANT PART: every counter in the chip advances per internal sample, so
+  # with identical register values the sequence of output samples is IDENTICAL
+  # and merely emitted faster. The 8 MHz render IS the 7.67 MHz render resampled
+  # by k. Not an approximation, an identity that follows from the architecture.
+  # That turns the clock difference from a confound into something analytically
+  # invertible.
+  ratio_k: 1.0429632
+  # Consequence: do NOT compensate F-num. Compensating pitch would change the
+  # phase increment to a different integer, the output would no longer be an
+  # exact resampling and we would lose the identity above.
+  compensate_fnum: false
+  # Resample the recording by 1/k to bring it onto the canonical protocol. What
+  # does NOT scale is the analogue side, because the reconstruction filter and
+  # the DAC distortion live outside the digital domain. That residual is exactly
+  # the isolated analogue behaviour of the real chip, which is what we wanted.
+  resample_recording_to_canonical: true
+  # Key scaling derives from Block and the high bits of F-num and shifts envelope
+  # rates in DISCRETE steps. Since we do not compensate F-num the key code should
+  # not move, but this is verified in code rather than assumed: a KS jump would
+  # be far larger than the 4 % clock effect and would contaminate the temporal
+  # descriptors.
+  assert_key_code_unchanged: true
+  # Free robustness check worth reporting: how far does the clock change move the
+  # feature space? If the shift is smaller than the corpus intra-cluster spread,
+  # that is a clean clock-robustness result.
+  report_clock_robustness: true
+
+timing:
+  # Simple tests match the corpus render protocol (sustain + release).
+  simple_test_sustain_s: 2.0
+  simple_test_release_s: 1.0
+  # Sweeps hold each step long enough to measure it.
+  sweep_step_s: 0.4
+  # 1 s of guard silence between tests absorbs residual alignment error.
+  guard_silence_s: 1.0
+  # Asymmetrically spaced short pulses, easy to locate by cross-correlation.
+  sync_pulse_count: 3
+  sync_pulse_s: 0.08
+  sync_gaps_s: [0.20, 0.35]
+  sync_lead_in_silence_s: 1.0
+  sync_lead_out_silence_s: 1.0
+
+# 8 synthetic diagnostics. Not corpus presets: fabricated probes aimed exactly
+# where emulators are known to diverge. Reported SEPARATELY and never averaged
+# with the real presets, because they are deliberately adversarial stimuli and
+# mixing them would give a pessimistic, misleading figure.
+diagnostics:
+  - id: "d1_reference_sine"
+    kind: "static"
+    description: "Single carrier at TL=0, others at 127, algorithm 7. Level, tuning and DAC linearity reference; also the calibration tone used to match gain between paths."
+    algorithm: 7
+    feedback: 0
+    operators:
+      - { tl: 127, mul: 1, ar: 31, d1r: 0, d2r: 0, rr: 15, d1l: 0, ks: 0, dt1: 0 }
+      - { tl: 127, mul: 1, ar: 31, d1r: 0, d2r: 0, rr: 15, d1l: 0, ks: 0, dt1: 0 }
+      - { tl: 127, mul: 1, ar: 31, d1r: 0, d2r: 0, rr: 15, d1l: 0, ks: 0, dt1: 0 }
+      - { tl: 0,   mul: 1, ar: 31, d1r: 0, d2r: 0, rr: 15, d1l: 0, ks: 0, dt1: 0 }
+
+  - id: "d2_tl_staircase"
+    kind: "sweep"
+    description: "Same carrier stepping TL 0..120 in steps of 8. Validates the logarithmic level table and, incidentally, the linearity of the instrument's analogue stage."
+    base: "d1_reference_sine"
+    sweep_param: "op4_tl"
+    sweep_values: [0, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88, 96, 104, 112, 120]
+
+  - id: "d3_modulation_index_sweep"
+    kind: "sweep"
+    description: "Modulator->carrier chain at 1:1 ratio, modulator TL from 127 down to 0. THE most diagnostic probe for our purposes: it measures sideband generation against Bessel behaviour, which is the theoretical foundation of E1."
+    algorithm: 0
+    feedback: 0
+    operators:
+      - { tl: 127, mul: 1, ar: 31, d1r: 0, d2r: 0, rr: 15, d1l: 0, ks: 0, dt1: 0 }
+      - { tl: 127, mul: 1, ar: 31, d1r: 0, d2r: 0, rr: 15, d1l: 0, ks: 0, dt1: 0 }
+      - { tl: 127, mul: 1, ar: 31, d1r: 0, d2r: 0, rr: 15, d1l: 0, ks: 0, dt1: 0 }
+      - { tl: 0,   mul: 1, ar: 31, d1r: 0, d2r: 0, rr: 15, d1l: 0, ks: 0, dt1: 0 }
+    sweep_param: "op1_tl"
+    sweep_values: [127, 112, 96, 80, 64, 56, 48, 40, 32, 24, 16, 8, 4, 0]
+
+  - id: "d4_ratio_sweep"
+    kind: "sweep"
+    description: "Same chain with modulator MUL 1..8 at fixed index. Validates the multiplier table and inharmonic behaviour."
+    base: "d3_modulation_index_sweep"
+    fixed_overrides: { op1_tl: 24 }
+    sweep_param: "op1_mul"
+    sweep_values: [1, 2, 3, 4, 5, 6, 7, 8]
+
+  - id: "d5_feedback_sweep"
+    kind: "sweep"
+    description: "FB 0..7 on a self-modulating operator 1. Classic divergence point between emulators, because of how the previous two samples are averaged."
+    algorithm: 7
+    feedback: 0
+    operators:
+      - { tl: 0,   mul: 1, ar: 31, d1r: 0, d2r: 0, rr: 15, d1l: 0, ks: 0, dt1: 0 }
+      - { tl: 127, mul: 1, ar: 31, d1r: 0, d2r: 0, rr: 15, d1l: 0, ks: 0, dt1: 0 }
+      - { tl: 127, mul: 1, ar: 31, d1r: 0, d2r: 0, rr: 15, d1l: 0, ks: 0, dt1: 0 }
+      - { tl: 127, mul: 1, ar: 31, d1r: 0, d2r: 0, rr: 15, d1l: 0, ks: 0, dt1: 0 }
+    sweep_param: "feedback"
+    sweep_values: [0, 1, 2, 3, 4, 5, 6, 7]
+
+  - id: "d6_envelope_timing"
+    kind: "sweep"
+    description: "Steps of AR, D1R, D2R and RR. Rate tables are another common divergence and they feed our temporal descriptors (log attack time, decay) directly."
+    base: "d1_reference_sine"
+    sweep_param: "envelope_combo"
+    sweep_values:
+      - { op4_ar: 31, op4_d1r: 0,  op4_d1l: 0,  op4_d2r: 0,  op4_rr: 15 }
+      - { op4_ar: 20, op4_d1r: 0,  op4_d1l: 0,  op4_d2r: 0,  op4_rr: 15 }
+      - { op4_ar: 12, op4_d1r: 0,  op4_d1l: 0,  op4_d2r: 0,  op4_rr: 15 }
+      - { op4_ar: 6,  op4_d1r: 0,  op4_d1l: 0,  op4_d2r: 0,  op4_rr: 15 }
+      - { op4_ar: 31, op4_d1r: 8,  op4_d1l: 8,  op4_d2r: 0,  op4_rr: 15 }
+      - { op4_ar: 31, op4_d1r: 16, op4_d1l: 8,  op4_d2r: 0,  op4_rr: 15 }
+      - { op4_ar: 31, op4_d1r: 31, op4_d1l: 15, op4_d2r: 0,  op4_rr: 15 }
+      - { op4_ar: 31, op4_d1r: 8,  op4_d1l: 4,  op4_d2r: 8,  op4_rr: 15 }
+      - { op4_ar: 31, op4_d1r: 0,  op4_d1l: 0,  op4_d2r: 0,  op4_rr: 4 }
+      - { op4_ar: 31, op4_d1r: 0,  op4_d1l: 0,  op4_d2r: 0,  op4_rr: 1 }
+
+  - id: "d7_low_level"
+    kind: "static"
+    description: "Carrier at high TL, i.e. a very quiet sine. THIS is where the ladder effect shows hardest: the discrete DAC crossover distortion appears strongly at low level and is exactly where emulator and real chip separate most."
+    base: "d1_reference_sine"
+    fixed_overrides: { op4_tl: 100 }
+
+  - id: "d8_detune_sweep"
+    kind: "sweep"
+    description: "DT1 0..7 on a carrier, measuring the beating. Validates the detune table."
+    base: "d1_reference_sine"
+    sweep_param: "op4_dt1"
+    sweep_values: [0, 1, 2, 3, 4, 5, 6, 7]
+
+# 10 real corpus presets.
+#
+# A note on "principal components": a PCA CENTROID IS NOT A PRESET and cannot be
+# played. The right object is a MEDOID, which is a real corpus preset and the
+# legitimate representative of its region. So 8 k-medoids over the audio feature
+# space plus 2 extremes on the leading principal axes. The extremes matter
+# because medoids sit in dense regions while emulator divergence is more likely
+# at the boundary of the space, which is precisely what medoids do not cover.
+corpus_block:
+  n_medoids: 8
+  n_pca_extremes: 2
+  medoid_source_space: "descriptors"
+  medoid_seed: 42
+  # Depends on Phase 2, so this block is built AFTER features exist. The
+  # diagnostic block depends on nothing and can be generated and recorded right
+  # away, which surfaces any big DAC surprise early.
+  requires_phase: 2
+
+# Test 1 is repeated at the end of the file. Two purposes: measure accumulated
+# clock drift between the player and the sound card, and confirm the analogue
+# stage has not moved during the take.
+repeat_first_test_at_end: true
+
+recording_requirements:
+  # Written down because a badly made take invalidates the experiment.
+  single_continuous_take: true
+  bit_depth: 24
+  sample_rate_hz: [96000, 48000]
+  no_eq: true
+  no_compression: true
+  # A limiter would ruin diagnostics d2 and d7.
+  no_limiter: true
+  target_peak_dbfs: -6.0
+  gain_fixed_before_take: true
+  leading_silence_s: 5.0     # to measure the noise floor
+  record_both_channels: true
+  verify_channels_equivalent: true
+  downmix: "mean"            # same convention as the renderer
+  # THE most important metadatum of the experiment: an original discrete YM2612
+  # and a YM3438 or its ASIC version do NOT sound the same at low level,
+  # precisely because of the DAC. Without this the comparison is uninterpretable.
+  chip_variant: null         # "YM2612" | "YM3438" | "ASIC" -- MUST be filled in
+  chip_variant_required: true
+  clock_hz: 8000000
+  notes: null
+
+acceptance:
+  # This is where the conceptual decision lives. We do NOT ask for waveform
+  # fidelity, which would be an impossible and irrelevant yardstick. What our
+  # claims need is that the emulator PRESERVES THE GEOMETRY of the timbre space.
+  primary:
+    metric: "mantel"
+    description: "Correlation between the two 18x18 distance matrices (hardware vs emulator) in the study's own feature space."
+    correlation: "spearman"
+    # Pre-registered BEFORE looking at the data.
+    threshold: 0.90
+    preregistered: true
+    n_permutations: 10000
+  secondary:
+    metric: "per_descriptor_relative_error"
+    descriptors: ["spectral_centroid", "log_attack_time", "mfcc_cosine"]
+  tertiary:
+    metric: "nearest_neighbour_agreement"
+    description: "Whether any pair swaps nearest neighbour when moving from emulator to hardware."
+  report_diagnostics_separately: true

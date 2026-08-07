@@ -1,0 +1,45 @@
+name: research-ci
+
+on:
+  push:
+    paths:
+      - "research/**"
+      - ".github/workflows/research-ci.yml"
+  pull_request:
+    paths:
+      - "research/**"
+      - ".github/workflows/research-ci.yml"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: research
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install Python package
+        run: pip install -e ".[dev]"
+      - name: Install Node render deps
+        run: npm install
+        working-directory: research/render
+      - name: Unit tests
+        run: python -m pytest -q -m "not slow and not needs_audio and not needs_gpu"
+      - name: Language guard
+        run: python -m pytest -q tests/test_language_guard.py
+      - name: Doctor
+        run: python -m dafm_audio.cli doctor
+      - name: Corpus smoke (if CSV present)
+        run: |
+          if [ -f ../data/processed/all_instruments_final.csv ]; then
+            python -m dafm_audio.cli corpus
+            python -m dafm_audio.cli check-corpus
+          else
+            echo "source CSV absent in CI clone; skipping corpus stage"
+          fi

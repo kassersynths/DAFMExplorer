@@ -1,0 +1,130 @@
+# Evaluation configuration. Ordered by value/cost; E1-E4 need no human
+# annotation at all.
+
+eval_version: 1
+seed: 42
+
+statistics:
+  # This block is where a journal paper is won or lost.
+  #
+  # The TL groups are NOT independent: they are nested inside timbral cores and
+  # many come from the same game and the same sound driver, so treating every
+  # pair as an independent observation would inflate significance artificially.
+  clustered_inference: true
+  cluster_unit: "core_id"
+  permutation_scheme: "within_core"
+  n_permutations: 10000
+  # E2 tests on the order of 45 parameters and E1 several metrics. Without
+  # correction, "findings" that are noise will appear. Method declared up front.
+  multiple_comparisons: "benjamini-hochberg"
+  fdr_alpha: 0.05
+  # With large n almost everything is significant; what is informative is how
+  # much. Effect sizes with confidence intervals, not just p values.
+  report_effect_sizes: true
+  ci_method: "bootstrap"
+  ci_level: 0.95
+  n_bootstrap: 10000
+
+e1_tl_carrier_vs_modulator:
+  enabled: true
+  # Pre-registered: the hypothesis comes from theory (Chowning 1973) and is
+  # falsifiable before looking at the data, so registering it publicly costs
+  # very little and adds a lot of credibility.
+  preregistered: true
+  preregistration_file: "artifacts/preregistration_e1.md"
+  hypothesis: >
+    At equal parametric distance, preset pairs differing only in the TL of a
+    MODULATOR show significantly larger perceptual distance than pairs differing
+    only in the TL of a CARRIER, because modulator TL controls the modulation
+    index and therefore spectral bandwidth, whereas carrier TL is essentially
+    amplitude.
+  primary_loudness_path: "r128"
+  test: "mann-whitney-u"
+  effect_size: "cliffs-delta"
+  # Decided IN ADVANCE, not while staring at the result and tempted to
+  # rationalise it. If the two groups do not separate there are three
+  # explanations and they are distinguishable:
+  null_result_protocol:
+    - id: "loudness_washed_it_out"
+      check: "repeat on the raw loudness path"
+    - id: "feature_space_insensitive"
+      check: "repeat with the other conditions and with MFCCD"
+    - id: "hypothesis_wrong_in_this_range"
+      check: "genuine negative result: modulator TL sits where Bessel is flat"
+
+e2_perturbation_sensitivity:
+  enabled: true
+  # BUDGET, fixed BEFORE launching. Cost is seeds x effective params x deltas,
+  # so 200 x 45 x 5 = 45000 renders, i.e. more than the entire corpus. Seeds are
+  # sized by statistical power, not by eye.
+  budget_max_renders: 12000
+  n_seeds: 48
+  seed_selection: "stratified_by_con_and_carrier_tl_quartile"
+  deltas: [-16, -4, 4, 16]
+  # Only effective parameters are perturbed; perturbing an inert column would
+  # measure nothing by construction.
+  restrict_to_effective_params: true
+
+e3_mcadams_dimensions:
+  enabled: true
+  # Contrast the principal axes of the audio space against attack time, spectral
+  # centroid and spectral flux (McAdams et al. 1995, on FM timbres from the
+  # TX802) and against the Peeters et al. (2011) taxonomy.
+  target_descriptors: ["log_attack_time", "spectral_centroid", "spectral_flux"]
+  n_components: 8
+  method: "canonical_correlation"
+
+e4_rank_correlation:
+  enabled: true
+  # MANDATORY implementation by stratified sampling and in blocks, never with
+  # full matrices: 38158 configurations give 1.46e9 pairs, 5.8 GB in float32 per
+  # space. Materialising them adds nothing and ties the experiment to RAM size.
+  method: "spearman"
+  n_pairs: 5000000
+  sampling: "stratified"
+  block_size: 4096
+  materialize_full_matrix: false
+
+e5_mfccd:
+  enabled: true
+  # Sound2Synth (IJCAI 2022) threshold of 10-15 as a published perceptual
+  # anchor, comparable with the literature.
+  n_mfcc: 13
+  indistinguishable_threshold: [10.0, 15.0]
+  published_baselines:
+    genetic_algorithm: 31.32
+    hill_climbing: 21.96
+    presetgen_vae: 14.70
+    sound2synth: 5.36
+
+e6_listening_test:
+  enabled: true
+  # The ONLY experiment that depends on people and therefore has the longest
+  # lead time. Design, recruitment and consent start IN PARALLEL WITH PHASE 2,
+  # not once everything else is done.
+  start_in_phase: 2
+  design: "triadic_odd_one_out"
+  n_triads: 180
+  n_participants_target: 24
+  stratification: "by_condition_and_distance_band"
+  # If it cannot be done, the paper stands on E1-E5 and this is declared a
+  # limitation, but then RQ5 is REMOVED from the list rather than left
+  # unanswered.
+  fallback_removes_rq: "RQ5"
+
+e7_game_footprint:
+  enabled: true
+  # Secondary and confounded on purpose: an OST deliberately contains different
+  # timbres, so "same game" is a weak signal. Declared as such.
+  k_values: [1, 5, 10, 50]
+  metrics: ["recall_at_k", "mrr", "mean_rank"]
+  # Correct the size bias: Spider-Man & X-Men alone is 6.4% of the corpus.
+  # Average PER GAME, never per preset.
+  aggregate_by: "game"
+  min_presets_per_game: 20
+
+clustering_coherence:
+  enabled: true
+  metrics: ["silhouette", "davies_bouldin", "ari_resample_stability"]
+  n_resamples: 20
+  resample_fraction: 0.8
